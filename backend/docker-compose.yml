@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+    market-expert-app:
+        build: .
+        container_name: market-expert-app
+        volumes:
+            - .:/var/www
+        networks:
+            - market-expert-network
+        depends_on:
+            - market-expert-db
+    market-expert-nginx:
+        build: .docker/nginx
+        container_name: market-expert-nginx
+        tty: true
+        ports:
+            - "8080:80"
+        volumes:
+            - .:/var/www
+        networks:
+            - market-expert-network
+        depends_on:
+            - market-expert-app
+    market-expert-db:
+        build: ./.docker/postgres
+        container_name: market-expert-db
+        tty: true
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./.docker/dbdata:/var/lib/postgresql/data
+            - ./.docker/postgres:/docker-entrypoint-initdb.d
+        environment:
+            - POSTGRES_DB=market_express
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+        networks:
+            - market-expert-network
+networks:
+    market-expert-network:
+        driver: bridge
