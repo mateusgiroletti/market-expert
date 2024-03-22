@@ -2,28 +2,34 @@
 
 namespace Infra\Controllers;
 
+use App\UseCases\Product\ListProductUseCase;
+use Infra\Database\DbConnection;
+use Infra\Repositories\PostgreProductRepository;
+
 class ProductController
 {
     public function index()
     {
-        $products = [
-            ['id' => 1, 'name' => 'Produto 1', 'price' => 10.99],
-            ['id' => 2, 'name' => 'Produto 2', 'price' => 20.99],
-            ['id' => 3, 'name' => 'Produto 3', 'price' => 30.99]
-        ];
+        $db = new DbConnection();
+        $productRepo = new PostgreProductRepository($db);
+        $useCase = new ListProductUseCase($productRepo);
 
-        // Converte o array para JSON
-        $jsonResponse = json_encode($products);
+        $products = $useCase->execute();
 
-        // Retorna a resposta JSON
-        echo $jsonResponse;
+        return json_encode($products);
+
+    }
+
+    public function show($productId)
+    {
+        return json_encode($productId);
+
     }
 
     public function store($product)
     {
 
-        echo json_encode([
-            'msg' => 'ok'
-        ]);
+        return json_encode($product);
+
     }
 }
