@@ -10,10 +10,17 @@
         "psr-4": {
             "Domain\\": "src/Domain/",
             "App\\": "src/App/",
-            "Infra\\": "src/Infra/"
+            "Infra\\": "src/Infra/",
+            "Config\\": "src/Config/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5"
+        "phpunit/phpunit": "^10.5",
+        "mockery/mockery": "^1.5"
     }
 }
