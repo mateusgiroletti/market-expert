@@ -24,6 +24,8 @@ class CreateProductTypeUseCase
 
         $newProductType = $this->productTypeRepo->create($productType);
 
+        $productType->setId($newProductType->getId());
+
         return new CreateProductTypeOutputDto(
             id: $newProductType->getId(),
             name: $productType->getName(),
