@@ -6,5 +6,5 @@ use Infra\Controllers\ProductController;
 $router = new Router();
 
 // Routes
-$router->addRoute('GET', '/products', ProductController::class, 'index');
-$router->addRoute('POST', '/products', ProductController::class, 'store');
+$router->get('/products', ProductController::class, 'index');
+$router->post('/products', ProductController::class, 'store');

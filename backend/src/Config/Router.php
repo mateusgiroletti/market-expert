@@ -6,7 +6,27 @@ class Router
 {
     protected $routes = [];
 
-    public function addRoute($method, $url, $controller, $controllerMethod)
+    public function get($url, $controller, $controllerMethod)
+    {
+        $this->addRoute('GET', $url, $controller, $controllerMethod);
+    }
+
+    public function post($url, $controller, $controllerMethod)
+    {
+        $this->addRoute('POST', $url, $controller, $controllerMethod);
+    }
+
+    public function put($url, $controller, $controllerMethod)
+    {
+        $this->addRoute('PUT', $url, $controller, $controllerMethod);
+    }
+
+    public function delete($url, $controller, $controllerMethod)
+    {
+        $this->addRoute('DELETE', $url, $controller, $controllerMethod);
+    }
+
+    protected function addRoute($method, $url, $controller, $controllerMethod)
     {
         $this->routes[$method][$url] = ['controller' => $controller, 'method' => $controllerMethod];
     }
@@ -26,9 +46,15 @@ class Router
             $requestData = json_decode($jsonPayload, true);
 
             $method = $handler['method'];
-            $controller->$method($requestData);
-        }
+            $response = $controller->$method($requestData);
 
+            // Configura o cabeçalho Content-Type para application/json
+            header('Content-Type: application/json');
+
+            // Retorna a resposta como JSON
+            echo $response;
+            return;
+        }
         echo "404 - Página não encontrada";
     }
 }
