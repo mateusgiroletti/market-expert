@@ -8,7 +8,9 @@
     ],
     "autoload": {
         "psr-4": {
-            "Domain\\": "src/Domain/"
+            "Domain\\": "src/Domain/",
+            "App\\": "src/App/",
+            "Infra\\": "src/Infra/"
         }
     },
     "require-dev": {
