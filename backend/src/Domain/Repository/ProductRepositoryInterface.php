@@ -6,6 +6,6 @@ use Domain\Entity\Product;
 
 interface ProductRepositoryInterface
 {
-    // public function create(Product $productType): Product;
+    public function insert(Product $product): bool;
     public function findAll(): array;
 }

@@ -16,11 +16,11 @@ class PostgreProductRepository implements ProductRepositoryInterface
         $this->db = $dbConnection->getConnection();
     }
 
-    /* public function create(Product $product): bool {
-        $sql = "INSERT INTO products (name, price) VALUES (?, ?)";
+    public function insert(Product $product): bool {
+        $sql = "INSERT INTO product (name, price) VALUES (?, ?)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$product->getName(), $product->getPrice()]);
-    } */
+    }
 
     public function findAll(): array
     {
