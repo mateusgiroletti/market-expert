@@ -16,10 +16,18 @@ class PostgreProductRepository implements ProductRepositoryInterface
         $this->db = $dbConnection->getConnection();
     }
 
-    public function insert(Product $product): bool {
-        $sql = "INSERT INTO product (name, price) VALUES (?, ?)";
-        $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$product->getName(), $product->getPrice()]);
+    public function insert(Product $product): bool
+    {
+
+        try {
+            $sql = "INSERT INTO product (name, price) VALUES (?, ?)";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$product->getName(), $product->getPrice()]);
+        } catch (\PDOException $e) {
+            http_response_code(400);
+            throw $e;
+            return false;
+        }
     }
 
     public function findAll(): array

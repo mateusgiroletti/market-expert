@@ -2,6 +2,7 @@
 
 namespace Infra\Controllers;
 
+use App\UseCases\DTO\Product\CreateProductInputDto;
 use App\UseCases\Product\CreateProductUseCase;
 use App\UseCases\Product\ListProductUseCase;
 use Infra\Database\DbConnection;
@@ -42,6 +43,23 @@ class ProductController
 
         $useCase = new CreateProductUseCase($this->productRepo);
 
-        return json_encode($products);
+        $input = new CreateProductInputDto(
+            name: $formData['name'],
+            price: $formData['price']
+        );
+
+
+        $newProduct = $useCase->execute($input);
+
+        if (!$newProduct) {
+            http_response_code(400);
+            return json_encode([
+                'error' => true,
+                'msg' => 'Error when create product'
+            ]);
+        }
+
+        http_response_code(201);
+        return json_encode([]);
     }
 }

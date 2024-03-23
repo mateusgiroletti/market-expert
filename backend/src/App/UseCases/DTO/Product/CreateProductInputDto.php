@@ -1,13 +1,12 @@
 <?php
 
-namespace App\UseCase\DTO\Product;
+namespace App\UseCases\Dto\Product;
 
 class CreateProductInputDto
 {
     public function __construct(
         public string $name,
-        public float $price,
-        public ?int $product_type_id
+        public float $price
     ) {
     }
 }

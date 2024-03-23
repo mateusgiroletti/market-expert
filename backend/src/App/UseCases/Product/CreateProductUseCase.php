@@ -2,7 +2,7 @@
 
 namespace App\UseCases\Product;
 
-use App\UseCase\DTO\Product\CreateProductInputDto;
+use App\UseCases\DTO\Product\CreateProductInputDto;
 use Domain\Entity\Product;
 use Domain\Repository\ProductRepositoryInterface;
 
@@ -15,15 +15,14 @@ class CreateProductUseCase
         $this->productRepo = $productRepo;
     }
 
-    public function execute(CreateProductInputDto $input): void
+    public function execute(CreateProductInputDto $input): bool
     {
         $product = new Product();
         $product->setName($input->name);
         $product->setPrice($input->price);
-        $product->setProductTypeId($input->product_type_id);
 
         $newProduct = $this->productRepo->insert($product);
 
-        var_dump($newProduct);
+        return $newProduct;
     }
 }
