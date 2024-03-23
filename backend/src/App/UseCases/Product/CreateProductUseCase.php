@@ -21,8 +21,8 @@ class CreateProductUseCase
         $product->setName($input->name);
         $product->setPrice($input->price);
 
-        $newProduct = $this->productRepo->insert($product);
+        $isProductCreate = $this->productRepo->insert($product);
 
-        return $newProduct;
+        return $isProductCreate;
     }
 }

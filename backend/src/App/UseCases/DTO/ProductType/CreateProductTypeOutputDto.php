@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UseCase\DTO\ProductType\ProductType;
+namespace App\UseCases\DTO\ProductType\ProductType;
 
 class CreateProductTypeOutputDto
 {

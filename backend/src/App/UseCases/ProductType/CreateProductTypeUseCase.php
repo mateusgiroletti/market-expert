@@ -2,8 +2,7 @@
 
 namespace App\UseCases\ProductType;
 
-use App\UseCase\DTO\ProductType\CreateProductTypeInputDto;
-use App\UseCase\DTO\ProductType\ProductType\CreateProductTypeOutputDto;
+use App\UseCases\DTO\ProductType\CreateProductTypeInputDto;
 use Domain\Entity\ProductType;
 use Domain\Repository\ProductTypeRepositoryInterface;
 
@@ -16,19 +15,17 @@ class CreateProductTypeUseCase
         $this->productTypeRepo = $productTypeRepo;
     }
 
-    public function execute(CreateProductTypeInputDto $input): CreateProductTypeOutputDto
+    public function execute(CreateProductTypeInputDto $input): bool|int
     {
-        $productType = new ProductType(
-            name: $input->name
-        );
+        $productType = new ProductType();
+        $productType->setName($input->name);
 
-        $newProductType = $this->productTypeRepo->create($productType);
+        $productTypeId = $this->productTypeRepo->insert($productType);
 
-        $productType->setId($newProductType->getId());
+        if(!$productTypeId){
+            return false;
+        }
 
-        return new CreateProductTypeOutputDto(
-            id: $newProductType->getId(),
-            name: $productType->getName(),
-        );
+        return $productTypeId;
     }
 }

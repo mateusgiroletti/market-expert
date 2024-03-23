@@ -2,11 +2,10 @@
 
 namespace App\UseCases\DTO\Product;
 
-class CreateProductInputDto
+class UpdateProductInputDto
 {
     public function __construct(
-        public string $name,
-        public float $price
+        public ?int $productTypeId
     ) {
     }
 }

@@ -16,6 +16,32 @@ class PostgreProductRepository implements ProductRepositoryInterface
         $this->db = $dbConnection->getConnection();
     }
 
+    public function findAll(): array
+    {
+        try {
+            $sql = "SELECT id, name, product_type_id, price FROM products";
+
+            $stmt = $this->db->query($sql);
+            $products = [];
+
+            while ($row = $stmt->fetch()) {
+                $newProduct = new Product();
+                $newProduct->setId($row['id']);
+                $newProduct->setProductTypeId($row['product_type_id']);
+                $newProduct->setName($row['name']);
+                $newProduct->setPrice($row['price']);
+
+                $products[] = $newProduct;
+            }
+
+            return $products;
+        } catch (\PDOException $e) {
+            http_response_code(400);
+            throw $e;
+            return false;
+        }
+    }
+
     public function insert(Product $product): bool
     {
         try {
@@ -29,23 +55,26 @@ class PostgreProductRepository implements ProductRepositoryInterface
         }
     }
 
-    public function findAll(): array
+    public function update(int $productId, array $fieldsToUpdate): bool
     {
-        $sql = "SELECT id, name, product_type_id, price FROM products";
+        try {
+            $sql = "UPDATE products SET ";
+            $params = [];
 
-        $stmt = $this->db->query($sql);
-        $products = [];
+            foreach ($fieldsToUpdate as $key => $value) {
+                $sql .= "$key = ?, ";
+                $params[] = $value;
+            }
 
-        while ($row = $stmt->fetch()) {
-            $newProduct = new Product();
-            $newProduct->setId($row['id']);
-            $newProduct->setProductTypeId($row['product_type_id']);
-            $newProduct->setName($row['name']);
-            $newProduct->setPrice($row['price']);
+            $sql = rtrim($sql, ', ') . " WHERE id = ?";
+            $params[] = $productId;
 
-            $products[] = $newProduct;
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute($params);
+        } catch (\PDOException $e) {
+            http_response_code(400);
+            throw $e;
+            return false;
         }
-
-        return $products;
     }
 }
