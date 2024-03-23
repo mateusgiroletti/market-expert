@@ -15,17 +15,16 @@ class CreateProductTypeUseCase
         $this->productTypeRepo = $productTypeRepo;
     }
 
-    public function execute(CreateProductTypeInputDto $input): bool|int
+    public function execute(CreateProductTypeInputDto $input): bool
     {
         $productType = new ProductType();
         $productType->setName($input->name);
 
-        $productTypeId = $this->productTypeRepo->insert($productType);
+        $isProductTypeCreate = $this->productTypeRepo->insertProductTypeAndUpdateProduct(
+            $productType,
+            $input->productId
+        );
 
-        if(!$productTypeId){
-            return false;
-        }
-
-        return $productTypeId;
+        return $isProductTypeCreate;
     }
 }

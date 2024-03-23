@@ -16,19 +16,26 @@ class PostgreProductTypeRepository implements ProductTypeRepositoryInterface
         $this->db = $dbConnection->getConnection();
     }
 
-    public function insert(ProductType $productType): bool|int
+    public function insertProductTypeAndUpdateProduct(ProductType $productType, int $productId): bool
     {
         try {
-            $sql = "INSERT INTO product_types (name) VALUES (?)";
-            $stmt = $this->db->prepare($sql);
-            $insertionResponse = $stmt->execute([$productType->getName()]);
+            $this->db->beginTransaction();
 
-            if ($insertionResponse) {
-                return $this->db->lastInsertId();
-            } else {
-                throw new \PDOException('Error when creating product type');
-            }
+            $sqlInsertProductType = "INSERT INTO product_types (name) VALUES (?)";
+            $stmtInsertProductType = $this->db->prepare($sqlInsertProductType);
+            $stmtInsertProductType->execute([$productType->getName()]);
+
+            $productTypeId = $this->db->lastInsertId();
+
+            $sqlUpdateProduct = "UPDATE products SET product_type_id = (?) WHERE id = (?)";
+            $stmtUpdateProduct = $this->db->prepare($sqlUpdateProduct);
+            $stmtUpdateProduct->execute([$productTypeId, $productId]);
+
+            $this->db->commit();
+
+            return true;
         } catch (\PDOException $e) {
+            $this->db->rollBack();
             http_response_code(400);
             throw $e;
             return false;
