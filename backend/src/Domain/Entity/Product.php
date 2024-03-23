@@ -2,8 +2,6 @@
 
 namespace Domain\Entity;
 
-use Domain\Validation\DomainValidation;
-
 class Product
 {
     private ?int $id = 0;
@@ -39,7 +37,6 @@ class Product
     public function setName(string $name): void
     {
         $this->name = $name;
-        $this->validateName();
     }
 
     public function getPrice(): float
@@ -50,11 +47,5 @@ class Product
     public function setPrice(float $price): void
     {
         $this->price = $price;
-    }
-
-    private function validateName()
-    {
-        DomainValidation::strMaxLength($this->name, 100);
-        DomainValidation::strMinLength($this->name, 2);
     }
 }

@@ -48,7 +48,6 @@ class ProductController
             price: $formData['price']
         );
 
-
         $newProduct = $useCase->execute($input);
 
         if (!$newProduct) {

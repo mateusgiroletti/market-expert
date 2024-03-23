@@ -18,9 +18,8 @@ class PostgreProductRepository implements ProductRepositoryInterface
 
     public function insert(Product $product): bool
     {
-
         try {
-            $sql = "INSERT INTO product (name, price) VALUES (?, ?)";
+            $sql = "INSERT INTO products (name, price) VALUES (?, ?)";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([$product->getName(), $product->getPrice()]);
         } catch (\PDOException $e) {
@@ -32,7 +31,7 @@ class PostgreProductRepository implements ProductRepositoryInterface
 
     public function findAll(): array
     {
-        $sql = "SELECT id, name, product_type_id, price FROM product";
+        $sql = "SELECT id, name, product_type_id, price FROM products";
 
         $stmt = $this->db->query($sql);
         $products = [];
