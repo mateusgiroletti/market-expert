@@ -35,23 +35,12 @@ class ProductController
 
     public function store($formData)
     {
+        Validator::validateNotEmpty($formData, ['name', 'price']);
+        Validator::validateNumericPositive($formData, ['price']);
+        Validator::validateMaxLength($formData, ['name'], 100);
+        Validator::validateMinLength($formData, ['name'], 2);
 
-        if (!Validator::validateNotEmpty($formData, ['name', 'price'])) {
-            http_response_code(400);
-            $response = ['error' => 'Fields  name and price is required'];
-            return json_encode($response);
-        }
-
-        if (!Validator::validateNumericPositive($formData, ['price'])) {
-            http_response_code(400);
-            $response = ['error' => 'Field price must be a positive number'];
-            return json_encode($response);
-        }
-
-        return;
         $useCase = new CreateProductUseCase($this->productRepo);
-
-        $products = $useCase->execute($product);
 
         return json_encode($products);
     }

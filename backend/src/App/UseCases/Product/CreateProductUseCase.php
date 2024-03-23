@@ -20,6 +20,7 @@ class CreateProductUseCase
         $product = new Product();
         $product->setName($input->name);
         $product->setPrice($input->price);
+        $product->setProductTypeId($input->product_type_id);
 
         $newProduct = $this->productRepo->insert($product);
 
