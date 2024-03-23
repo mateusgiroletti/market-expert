@@ -4,7 +4,7 @@ BEGIN
         CREATE DATABASE market_expert;
     END IF;
 
-    CREATE TABLE IF NOT EXISTS product_type (
+    CREATE TABLE IF NOT EXISTS product_types (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL
     );
@@ -17,7 +17,7 @@ BEGIN
     );
 
 
-    CREATE TABLE IF NOT EXISTS product (
+    CREATE TABLE IF NOT EXISTS products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         product_type_id INT NULL,
