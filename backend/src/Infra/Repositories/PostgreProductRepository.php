@@ -42,6 +42,38 @@ class PostgreProductRepository implements ProductRepositoryInterface
         }
     }
 
+    public function findById(int $productId): Product|bool
+    {
+        try {
+            $sql = "
+                select 
+                    p.id as product_id,
+                    p.price as product_price,
+                    ptt.percentual as product_taxe_percentual
+                from products p 
+                left join product_types pt ON pt.id = p.product_type_id  
+                left join product_type_taxes ptt ON ptt.product_type_id = pt.id 
+                where p.id = ?";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $productResult = $stmt->fetch();
+
+            $newProduct = new Product();
+            $newProduct->setId($productResult['product_id']);
+            $newProduct->setPrice($productResult['product_price']);
+            $newProduct->setTaxePercentual($productResult['product_taxe_percentual']);
+
+            return $newProduct;
+        } catch (\PDOException $e) {
+            http_response_code(400);
+            throw $e;
+            return false;
+        }
+    }
+
     public function insert(Product $product): bool
     {
         try {

@@ -39,7 +39,6 @@ BEGIN
         amount INT NOT NULL,
         subtotal NUMERIC(10, 2) NOT null,
         total_tax NUMERIC(10, 2) NOT null,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (sale_id) REFERENCES sales(id),
         FOREIGN KEY (product_type_id) REFERENCES product_type(id)
     );

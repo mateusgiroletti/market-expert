@@ -8,6 +8,7 @@ class Product
     private int|null $productTypeId;
     private string $name;
     private float $price;
+    private ?int $taxePercentual;
 
     public function getId(): int
     {
@@ -47,5 +48,15 @@ class Product
     public function setPrice(float $price): void
     {
         $this->price = $price;
+    }
+
+    public function getTaxePercentual(): int
+    {
+        return $this->taxePercentual;
+    }
+
+    public function setTaxePercentual(int $taxePercentual): void
+    {
+        $this->taxePercentual = $taxePercentual;
     }
 }

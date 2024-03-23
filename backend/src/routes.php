@@ -4,6 +4,7 @@ use Config\Router;
 use Infra\Controllers\ProductController;
 use Infra\Controllers\ProductTypeController;
 use Infra\Controllers\ProductTypeTaxesController;
+use Infra\Controllers\SaleController;
 
 $router = new Router();
 
@@ -16,3 +17,6 @@ $router->post('/product-types', ProductTypeController::class, 'store');
 
 // Routes products Type Taxes
 $router->post('/product-type-taxes', ProductTypeTaxesController::class, 'store');
+
+// Routes Sales
+$router->post('/sales', SaleController::class, 'store');

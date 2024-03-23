@@ -9,4 +9,5 @@ interface ProductRepositoryInterface
     public function insert(Product $product): bool;
     public function update(int $productId, array $product): bool;
     public function findAll(): array;
+    public function findById(int $productId): Product|bool;
 }
