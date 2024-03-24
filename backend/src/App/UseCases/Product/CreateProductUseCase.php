@@ -3,6 +3,7 @@
 namespace App\UseCases\Product;
 
 use App\UseCases\DTO\Product\CreateProductInputDto;
+use App\Utils\Helper;
 use Domain\Entity\Product;
 use Domain\Repository\ProductRepositoryInterface;
 
@@ -19,7 +20,7 @@ class CreateProductUseCase
     {
         $product = new Product();
         $product->setName($input->name);
-        $product->setPrice($input->price);
+        $product->setPrice(Helper::roundToTwoDecimal($input->price));
 
         $isProductCreate = $this->productRepo->insert($product);
 
