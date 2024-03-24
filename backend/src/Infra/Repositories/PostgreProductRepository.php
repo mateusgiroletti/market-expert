@@ -44,15 +44,7 @@ class PostgreProductRepository implements ProductRepositoryInterface
     public function findById(int $productId): Product|bool
     {
         try {
-            $sql = "
-                select 
-                    p.id as product_id,
-                    p.price as product_price,
-                    ptt.percentual as product_taxe_percentual
-                from products p 
-                left join product_types pt ON pt.id = p.product_type_id  
-                left join product_type_taxes ptt ON ptt.product_type_id = pt.id 
-                where p.id = ?";
+            $sql = "SELECT id, name, price FROM products WHERE id = ?";
 
             $stmt = $this->db->prepare($sql);
             $stmt->bindParam(1, $productId, PDO::PARAM_INT);
@@ -61,9 +53,9 @@ class PostgreProductRepository implements ProductRepositoryInterface
             $productResult = $stmt->fetch();
 
             $newProduct = new Product();
-            $newProduct->setId($productResult['product_id']);
-            $newProduct->setPrice($productResult['product_price']);
-            $newProduct->setTaxePercentual($productResult['product_taxe_percentual']);
+            $newProduct->setId($productResult['id']);
+            $newProduct->setName($productResult['name']);
+            $newProduct->setPrice($productResult['price']);
 
             return $newProduct;
         } catch (\PDOException $e) {
