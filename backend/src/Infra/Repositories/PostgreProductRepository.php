@@ -19,7 +19,7 @@ class PostgreProductRepository implements ProductRepositoryInterface
     public function findAll(): array
     {
         try {
-            $sql = "SELECT id, name, product_type_id, price FROM products";
+            $sql = "SELECT id, name, price FROM products";
 
             $stmt = $this->db->query($sql);
             $products = [];
@@ -27,7 +27,6 @@ class PostgreProductRepository implements ProductRepositoryInterface
             while ($row = $stmt->fetch()) {
                 $newProduct = new Product();
                 $newProduct->setId($row['id']);
-                $newProduct->setProductTypeId($row['product_type_id']);
                 $newProduct->setName($row['name']);
                 $newProduct->setPrice($row['price']);
 

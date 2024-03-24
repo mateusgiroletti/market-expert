@@ -13,6 +13,7 @@ $router->get('/products', ProductController::class, 'index');
 $router->post('/products', ProductController::class, 'store');
 
 // Routes products Type
+$router->get('/product-types', ProductTypeController::class, 'index');
 $router->post('/product-types', ProductTypeController::class, 'store');
 
 // Routes products Type Taxes

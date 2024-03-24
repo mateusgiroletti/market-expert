@@ -29,11 +29,6 @@ class ProductController
         return json_encode($products);
     }
 
-    public function show($productId)
-    {
-        return json_encode($productId);
-    }
-
     public function store($formData)
     {
         Validator::validateNotEmpty($formData, ['name', 'price']);

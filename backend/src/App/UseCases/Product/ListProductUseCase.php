@@ -22,7 +22,6 @@ class ListProductUseCase
             $newProduct = [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
-                'product_type_id' => $product->getProductTypeId(),
                 'price' => $product->getPrice(),
             ];
 

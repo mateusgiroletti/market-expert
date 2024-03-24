@@ -4,6 +4,7 @@ namespace Infra\Controllers;
 
 use App\UseCases\DTO\ProductType\CreateProductTypeInputDto;
 use App\UseCases\ProductType\CreateProductTypeUseCase;
+use App\UseCases\ProductType\ListProductTypeUseCase;
 use Infra\Database\DbConnection;
 use Infra\Repositories\PostgreProductTypeRepository;
 use Infra\Utils\Validator;
@@ -19,8 +20,23 @@ class ProductTypeController
         $this->productTypeRepo = new PostgreProductTypeRepository($this->dbConnection);
     }
 
+    public function index($formData)
+    {
+
+        $productId = $formData['product_id'];
+
+        $useCase = new ListProductTypeUseCase($this->productTypeRepo);
+
+        $products = $useCase->execute($productId);
+
+        return json_encode($products);
+    }
+
     public function store($formData)
     {
+        var_dump($formData);
+
+        return;
         Validator::validateNotEmpty($formData, ['name', 'product_id']);
         Validator::validateMaxLength($formData, ['name'], 100);
         Validator::validateMinLength($formData, ['name'], 2);

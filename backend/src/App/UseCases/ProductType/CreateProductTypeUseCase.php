@@ -19,10 +19,10 @@ class CreateProductTypeUseCase
     {
         $productType = new ProductType();
         $productType->setName($input->name);
+        $productType->setProductId($input->productId);
 
-        $isProductTypeCreate = $this->productTypeRepo->insertProductTypeAndUpdateProduct(
-            $productType,
-            $input->productId
+        $isProductTypeCreate = $this->productTypeRepo->insert(
+            $productType
         );
 
         return $isProductTypeCreate;

@@ -34,15 +34,29 @@ class Router
     {
         $this->headersOptions();
 
-        if (isset($this->routes[$method][$url])) {
-            $handler = $this->routes[$method][$url];
+        $queryParams = [];
+        $urlParts = explode('?', $url);
+        $urlWithoutQuery = $urlParts[0];
+        if (count($urlParts) > 1) {
+            $query = $urlParts[1];
+            parse_str($query, $queryParams);
+        }
+
+        if (isset($this->routes[$method][$urlWithoutQuery])) {
+            $handler = $this->routes[$method][$urlWithoutQuery];
             $controller = new $handler['controller']();
 
             // Lê o corpo da requisição
             $jsonPayload = file_get_contents('php://input');
 
             // Decodifica o JSON em um array associativo
-            $requestData = json_decode($jsonPayload, true);
+            $requestBodyData = json_decode($jsonPayload, true);
+
+            $requestData = $queryParams;
+
+            if (!empty($requestBodyData)) {
+                $requestData = array_merge($requestData, $requestBodyData);
+            }
 
             $method = $handler['method'];
             $response = $controller->$method($requestData);
@@ -50,6 +64,7 @@ class Router
             echo $response;
             return;
         }
+
         echo "404 - Página não encontrada";
     }
 }

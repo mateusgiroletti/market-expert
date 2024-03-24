@@ -6,5 +6,6 @@ use Domain\Entity\ProductType;
 
 interface ProductTypeRepositoryInterface
 {
-    public function insertProductTypeAndUpdateProduct(ProductType $productType, int $productId): bool;
+    public function findAllByProductId(int $productId): array;
+    public function insert(ProductType $productType): bool;
 }

@@ -3,24 +3,24 @@ BEGIN
     IF NOT EXISTS (SELECT FROM pg_database WHERE datname = 'market_expert') THEN
         CREATE DATABASE market_expert;
     END IF;
+   
+   CREATE TABLE IF NOT EXISTS products (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        price NUMERIC(10, 2) NOT NULL
+    );
 
     CREATE TABLE IF NOT EXISTS product_types (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL
+        name VARCHAR(100) NOT null,
+        product_id INT NOT NULL,
+        FOREIGN KEY (product_id) REFERENCES products(id)
     );
 
     CREATE TABLE IF NOT EXISTS product_type_taxes (
         id SERIAL PRIMARY KEY,
         product_type_id INT NOT NULL,
         percentual INT NOT NULL,
-        FOREIGN KEY (product_type_id) REFERENCES product_types(id)
-    );
-
-    CREATE TABLE IF NOT EXISTS products (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(100) NOT NULL,
-        product_type_id INT NULL,
-        price NUMERIC(10, 2) NOT NULL,
         FOREIGN KEY (product_type_id) REFERENCES product_types(id)
     );
 

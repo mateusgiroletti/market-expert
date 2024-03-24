@@ -6,6 +6,7 @@ class ProductType
 {
     private ?int $id = 0;
     private string $name;
+    private int $productId;
 
     public function getId(): int
     {
@@ -25,5 +26,15 @@ class ProductType
     public function setName(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getProductId(): int
+    {
+        return $this->productId;
+    }
+
+    public function setProductId(int $productId): void
+    {
+        $this->productId = $productId;
     }
 }

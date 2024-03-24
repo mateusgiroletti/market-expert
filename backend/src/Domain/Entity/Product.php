@@ -5,7 +5,6 @@ namespace Domain\Entity;
 class Product
 {
     private ?int $id = 0;
-    private int|null $productTypeId;
     private string $name;
     private float $price;
     private ?int $taxePercentual;
@@ -18,16 +17,6 @@ class Product
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    public function getProductTypeId(): int|null
-    {
-        return $this->productTypeId;
-    }
-
-    public function setProductTypeId(int|null $productTypeId): void
-    {
-        $this->productTypeId = $productTypeId;
     }
 
     public function getName(): string

@@ -16,26 +16,48 @@ class PostgreProductTypeRepository implements ProductTypeRepositoryInterface
         $this->db = $dbConnection->getConnection();
     }
 
-    public function insertProductTypeAndUpdateProduct(ProductType $productType, int $productId): bool
+    public function findAllByProductId($productId): array
     {
         try {
-            $this->db->beginTransaction();
+            $sql = "
+                SELECT 
+                    pt.id,
+                    pt.name
+                FROM product_types pt
+                LEFT JOIN products p ON pt.product_id = p.id  
+                WHERE p.id = ?";
 
-            $sqlInsertProductType = "INSERT INTO product_types (name) VALUES (?)";
-            $stmtInsertProductType = $this->db->prepare($sqlInsertProductType);
-            $stmtInsertProductType->execute([$productType->getName()]);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(1, $productId, PDO::PARAM_INT);
+            $stmt->execute();
 
-            $productTypeId = $this->db->lastInsertId();
+            $productsTypesArray = [];
 
-            $sqlUpdateProduct = "UPDATE products SET product_type_id = (?) WHERE id = (?)";
-            $stmtUpdateProduct = $this->db->prepare($sqlUpdateProduct);
-            $stmtUpdateProduct->execute([$productTypeId, $productId]);
+            while ($row = $stmt->fetch()) {
+                $newProductType = new ProductType();
+                $newProductType->setId($row['id']);
+                $newProductType->setName($row['name']);
 
-            $this->db->commit();
+                $productsTypesArray[] = $newProductType;
+            }
+
+            return $productsTypesArray;
+        } catch (\PDOException $e) {
+            http_response_code(400);
+            throw $e;
+            return false;
+        }
+    }
+
+    public function insert(ProductType $productType): bool
+    {
+        try {
+            $sql = "INSERT INTO product_types (name, product_id) VALUES (?, ?)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$productType->getName(), $productType->getProductId()]);
 
             return true;
         } catch (\PDOException $e) {
-            $this->db->rollBack();
             http_response_code(400);
             throw $e;
             return false;
