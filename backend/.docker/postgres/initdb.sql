@@ -13,16 +13,15 @@ BEGIN
         id SERIAL PRIMARY KEY,
         product_type_id INT NOT NULL,
         percentual INT NOT NULL,
-        FOREIGN KEY (product_type_id) REFERENCES product_type(id)
+        FOREIGN KEY (product_type_id) REFERENCES product_types(id)
     );
-
 
     CREATE TABLE IF NOT EXISTS products (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         product_type_id INT NULL,
         price NUMERIC(10, 2) NOT NULL,
-        FOREIGN KEY (product_type_id) REFERENCES product_type(id)
+        FOREIGN KEY (product_type_id) REFERENCES product_types(id)
     );
 
     CREATE TABLE IF NOT EXISTS sales (
@@ -35,11 +34,11 @@ BEGIN
     CREATE TABLE IF NOT EXISTS sales_products (
         id SERIAL PRIMARY KEY,
         sale_id INT NOT NULL,
-        product_type_id INT NOT NULL,
+        product_id INT NOT NULL,
         amount INT NOT NULL,
         subtotal NUMERIC(10, 2) NOT null,
         total_tax NUMERIC(10, 2) NOT null,
         FOREIGN KEY (sale_id) REFERENCES sales(id),
-        FOREIGN KEY (product_type_id) REFERENCES product_type(id)
+        FOREIGN KEY (product_id) REFERENCES products(id)
     );
 END $$;
