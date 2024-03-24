@@ -34,9 +34,6 @@ class ProductTypeController
 
     public function store($formData)
     {
-        var_dump($formData);
-
-        return;
         Validator::validateNotEmpty($formData, ['name', 'product_id']);
         Validator::validateMaxLength($formData, ['name'], 100);
         Validator::validateMinLength($formData, ['name'], 2);
