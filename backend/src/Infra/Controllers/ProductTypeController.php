@@ -22,7 +22,6 @@ class ProductTypeController
 
     public function index($formData)
     {
-
         $productId = $formData['product_id'];
 
         $useCase = new ListProductTypeUseCase($this->productTypeRepo);

@@ -6,7 +6,7 @@ class ProductType
 {
     private ?int $id = 0;
     private string $name;
-    private int $productId;
+    private ?int $productId = 0;
 
     public function getId(): int
     {

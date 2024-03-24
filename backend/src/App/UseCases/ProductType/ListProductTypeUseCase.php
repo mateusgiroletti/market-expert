@@ -15,8 +15,21 @@ class ListProductTypeUseCase
 
     public function execute(int $productId): array
     {
-        $productsTypes = $this->productTypeRepo->findAllByProductId($productId);
+        $productsTypesFromRepo = $this->productTypeRepo->findAllByProductId($productId);
 
-        return $productsTypes;
+        $productTypes = [];
+
+        foreach ($productsTypesFromRepo as $productType) {
+            $newProductType = [
+                'id' => $productType->getId(),
+                'name' => $productType->getName(),
+                'product_id' => $productType->getProductId(),
+            ];
+
+            $productTypes[] = $newProductType;
+        }
+
+
+        return $productTypes;
     }
 }

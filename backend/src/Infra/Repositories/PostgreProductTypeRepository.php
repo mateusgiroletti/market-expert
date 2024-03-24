@@ -22,7 +22,8 @@ class PostgreProductTypeRepository implements ProductTypeRepositoryInterface
             $sql = "
                 SELECT 
                     pt.id,
-                    pt.name
+                    pt.name,
+                    p.id as product_id
                 FROM product_types pt
                 LEFT JOIN products p ON pt.product_id = p.id  
                 WHERE p.id = ?";
@@ -37,6 +38,7 @@ class PostgreProductTypeRepository implements ProductTypeRepositoryInterface
                 $newProductType = new ProductType();
                 $newProductType->setId($row['id']);
                 $newProductType->setName($row['name']);
+                $newProductType->setProductId($row['product_id']);
 
                 $productsTypesArray[] = $newProductType;
             }
