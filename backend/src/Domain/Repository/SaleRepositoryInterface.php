@@ -3,7 +3,6 @@
 namespace Domain\Repository;
 
 use Domain\Entity\Sale;
-use Domain\Entity\SaleProduct;
 
 interface SaleRepositoryInterface
 {
