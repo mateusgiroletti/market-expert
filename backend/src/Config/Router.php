@@ -6,36 +6,34 @@ class Router
 {
     protected $routes = [];
 
-    public function get($url, $controller, $controllerMethod)
+    public function get(string $url, string $controller, string $controllerMethod): void
     {
         $this->addRoute('GET', $url, $controller, $controllerMethod);
     }
 
-    public function post($url, $controller, $controllerMethod)
+    public function post(string $url, string $controller, string $controllerMethod): void
     {
         $this->addRoute('POST', $url, $controller, $controllerMethod);
     }
 
-    public function put($url, $controller, $controllerMethod)
-    {
-        $this->addRoute('PUT', $url, $controller, $controllerMethod);
-    }
-
-    public function delete($url, $controller, $controllerMethod)
-    {
-        $this->addRoute('DELETE', $url, $controller, $controllerMethod);
-    }
-
-    protected function addRoute($method, $url, $controller, $controllerMethod)
+    protected function addRoute(string $method, string $url, string $controller, $controllerMethod): void
     {
         $this->routes[$method][$url] = ['controller' => $controller, 'method' => $controllerMethod];
     }
 
+    protected function headersOptions(): void
+    {
+        header('Content-Type: application/json');
+
+        header("Access-Control-Allow-Origin: *");
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+    }
+
     public function handleRequest($method, $url)
     {
-        if (isset($this->routes[$method][$url])) {
-            header('Content-Type: application/json');
+        $this->headersOptions();
 
+        if (isset($this->routes[$method][$url])) {
             $handler = $this->routes[$method][$url];
             $controller = new $handler['controller']();
 
@@ -48,10 +46,6 @@ class Router
             $method = $handler['method'];
             $response = $controller->$method($requestData);
 
-            // Configura o cabeçalho Content-Type para application/json
-            header('Content-Type: application/json');
-
-            // Retorna a resposta como JSON
             echo $response;
             return;
         }
