@@ -2,8 +2,6 @@
 
 namespace App\UseCases\Sale;
 
-use App\UseCases\DTO\Product\CreateProductInputDto;
-use Domain\Entity\Product;
 use Domain\Entity\Sale;
 use Domain\Entity\SaleProduct;
 use Domain\Repository\ProductRepositoryInterface;
@@ -24,19 +22,47 @@ class CreateSaleUseCase
 
     public function execute(array $input): bool
     {
-
         $totalCompra = 0;
         $totalTaxes = 0;
+
+        $saleProducts = [];
 
         foreach ($input as $product) {
             $productInfo = $this->productRepo->findById($product['product_id']);
 
-            $taxes = $productInfo->getPrice() * ($productInfo->getTaxePercentual() / 100) * $product['amount'];
+            // valor do produto X quantidade
+            $totalProduct = $productInfo->getPrice() * $product['amount'];
 
+            //Total de taxes de um produto
+            $taxes = ($productInfo->getPrice() * ($productInfo->getTaxePercentual() / 100)) * $product['amount'];
+
+            // subtotal do produto
+            $subtotalProduct = $totalProduct + $taxes;
+
+            //Soma total de taxes dos produtos
             $totalTaxes += $taxes;
+
+            $totalCompra += $subtotalProduct;
+
+            /* sale_id => definir no repository quando criar a venda
+             */
+
+            $saleProduct = new SaleProduct();
+            $saleProduct->setProductId($product['product_id']);
+            $saleProduct->setAmount($product['amount']);
+            $saleProduct->setSubtotal($subtotalProduct);
+            $saleProduct->setTotalTax($taxes);
+
+            $saleProducts[] = $saleProduct;
         }
 
-        var_dump($totalTaxes);
+        $sale = new Sale();
+        $sale->setTotalPurchase($totalCompra);
+        $sale->setTotalTax($totalTaxes);
+
+        // var_dump($saleProducts);
+
+        $isSaleCreate = $this->saleRepo->insert($sale, $saleProducts);
 
         return true;
     }

@@ -24,7 +24,7 @@ class Sale
         return $this->totalPurchase;
     }
 
-    public function setTotalPurchase(int $totalPurchase): void
+    public function setTotalPurchase(float $totalPurchase): void
     {
         $this->totalPurchase = $totalPurchase;
     }

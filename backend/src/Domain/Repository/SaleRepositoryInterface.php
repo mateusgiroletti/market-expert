@@ -7,5 +7,5 @@ use Domain\Entity\SaleProduct;
 
 interface SaleRepositoryInterface
 {
-    public function insert(Sale $sale, SaleProduct $saleProducts): bool;
+    public function insert(Sale $sale, array $saleProducts): bool;
 }

@@ -17,15 +17,29 @@ class PostgreSaleRepository implements SaleRepositoryInterface
         $this->db = $dbConnection->getConnection();
     }
 
-    public function insert(Sale $sale, SaleProduct $saleProducts): bool
+    public function insert(Sale $sale, array $saleProducts): bool
     {
         try {
-            $sql = "INSERT INTO sales (total_purchase, total_tax) VALUES (?, ?)";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$sale->getTotalPurchase(), $sale->getTotalTax()]);
+            $this->db->beginTransaction();
+
+            $sqlInsertSale = "INSERT INTO sales (total_purchase, total_tax) VALUES (?, ?)";
+            $stmtInsertSale = $this->db->prepare($sqlInsertSale);
+            $stmtInsertSale->execute([$sale->getTotalPurchase(), $sale->getTotalTax()]);
 
             $saleId = $this->db->lastInsertId();
+
+            foreach ($saleProducts as $saleProduct) {
+                $sqlInsertSaleProduct = "INSERT INTO sales_products (sale_id, product_id, amount, subtotal, total_tax) VALUES (?, ?, ?, ?, ?)";
+                $stmtInsertSaleProduct = $this->db->prepare($sqlInsertSaleProduct);
+                $stmtInsertSaleProduct->execute([$saleId, $saleProduct->getProductId(), $saleProduct->getAmount(), $saleProduct->getSubtotal(), $saleProduct->getTotalTax()]);
+            }
+
+            $this->db->commit();
+
+            return true;
         } catch (\PDOException $e) {
+            $this->db->rollBack();
+
             http_response_code(400);
             throw $e;
             return false;

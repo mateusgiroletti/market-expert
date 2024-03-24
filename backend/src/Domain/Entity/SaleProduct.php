@@ -6,7 +6,7 @@ class SaleProduct
 {
     private ?int $id = 0;
     private int $saleId;
-    private int $productTypeId;
+    private int $productId;
     private int $amount;
     private float $subtotal;
     private float $totalTax;
@@ -31,14 +31,14 @@ class SaleProduct
         $this->saleId = $saleId;
     }
 
-    public function getProductTypeId(): int
+    public function getProductId(): int
     {
-        return $this->productTypeId;
+        return $this->productId;
     }
 
-    public function setProductTypeId(int $productTypeId): void
+    public function setProductId(int $productId): void
     {
-        $this->productTypeId = $productTypeId;
+        $this->productId = $productId;
     }
 
     public function getAmount(): int
