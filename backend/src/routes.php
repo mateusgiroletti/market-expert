@@ -17,6 +17,7 @@ $router->get('/product-types', ProductTypeController::class, 'index');
 $router->post('/product-types', ProductTypeController::class, 'store');
 
 // Routes products Type Taxes
+$router->get('/product-type-taxes', ProductTypeTaxesController::class, 'index');
 $router->post('/product-type-taxes', ProductTypeTaxesController::class, 'store');
 
 // Routes Sales

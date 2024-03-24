@@ -16,6 +16,42 @@ class PostgreProductTypeTaxesRepository implements ProductTypeTaxesRepositoryInt
         $this->db = $dbConnection->getConnection();
     }
 
+    public function findAllByProductTypeId($productTypeId): array
+    {
+        try {
+            $sql = "
+                SELECT 
+                    ptt.id,
+                    ptt.percentual,
+                    pt.id as product_type_id
+                FROM product_type_taxes ptt
+                LEFT JOIN product_types pt ON pt.id = ptt.product_type_id  
+                WHERE pt.id = ?";
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(1, $productTypeId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $productsTypeTaxesArray = [];
+
+            while ($row = $stmt->fetch()) {
+                $newProductTypeTaxe = new ProductTypeTaxes();
+                $newProductTypeTaxe->setId($row['id']);
+                $newProductTypeTaxe->setPercentual($row['percentual']);
+                $newProductTypeTaxe->setProductTypeId($row['product_type_id']);
+
+                $productsTypeTaxesArray[] = $newProductTypeTaxe;
+            }
+
+            return $productsTypeTaxesArray;
+        } catch (\PDOException $e) {
+            http_response_code(400);
+            throw $e;
+            return false;
+        }
+    }
+
+
     public function insert(ProductTypeTaxes $productType): bool
     {
         try {

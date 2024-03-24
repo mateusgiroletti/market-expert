@@ -4,6 +4,7 @@ namespace Infra\Controllers;
 
 use App\UseCases\DTO\ProductTypeTaxes\CreateProductTypeTaxesInputDto;
 use App\UseCases\ProductTypeTaxes\CreateProductTypeTaxesUseCase;
+use App\UseCases\ProductTypeTaxes\ListProductTypeTaxesUseCase;
 use Infra\Database\DbConnection;
 use Infra\Repositories\PostgreProductTypeTaxesRepository;
 use Infra\Utils\Validator;
@@ -17,6 +18,17 @@ class ProductTypeTaxesController
     {
         $this->dbConnection = new DbConnection();
         $this->productTypeTaxesRepo = new PostgreProductTypeTaxesRepository($this->dbConnection);
+    }
+
+    public function index($formData)
+    {
+        $productId = $formData['product_type_id'];
+
+        $useCase = new ListProductTypeTaxesUseCase($this->productTypeTaxesRepo);
+
+        $products = $useCase->execute($productId);
+
+        return json_encode($products);
     }
 
     public function store($formData)
