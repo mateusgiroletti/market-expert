@@ -3,6 +3,7 @@
 namespace Infra\Controllers;
 
 use App\UseCases\DTO\Product\CreateProductInputDto;
+use App\UseCases\DTO\Sale\CreateSaleInputDto;
 use App\UseCases\Product\CreateProductUseCase;
 use App\UseCases\Product\CreateSaleUseCase;
 use App\UseCases\Sale\CreateSaleUseCase as SaleCreateSaleUseCase;
@@ -30,14 +31,11 @@ class SaleController
 
         $useCase = new SaleCreateSaleUseCase($this->saleRepo, $this->productRepo);
 
-        $products = $formData['products'];
+        $input = new CreateSaleInputDto(
+            products: $formData['products'],
+        );
 
-        /*  $input = new CreateProductInputDto(
-            name: $formData['name'],
-            price: $formData['price']
-        ); */
-
-        $newProduct = $useCase->execute($products);
+        $newProduct = $useCase->execute($input);
 
         if (!$newProduct) {
             http_response_code(400);

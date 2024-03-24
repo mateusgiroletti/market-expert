@@ -3,7 +3,6 @@
 namespace Infra\Repositories;
 
 use Domain\Entity\Sale;
-use Domain\Entity\SaleProduct;
 use Domain\Repository\SaleRepositoryInterface;
 use Infra\Database\DbConnection;
 use PDO;
