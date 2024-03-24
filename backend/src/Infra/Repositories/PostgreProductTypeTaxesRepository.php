@@ -40,7 +40,13 @@ class PostgreProductTypeTaxesRepository implements ProductTypeTaxesRepositoryInt
                 $newProductTypeTaxe->setPercentual($row['percentual']);
                 $newProductTypeTaxe->setProductTypeId($row['product_type_id']);
 
-                $productsTypeTaxesArray[] = $newProductTypeTaxe;
+                $newProductTypeTaxeItem = [
+                    'id' => $newProductTypeTaxe->getId(),
+                    'product_type_id' => $newProductTypeTaxe->getProductTypeId(),
+                    'percentual' => $newProductTypeTaxe->getPercentual(),
+                ];
+
+                $productsTypeTaxesArray[] = $newProductTypeTaxeItem;
             }
 
             return $productsTypeTaxesArray;

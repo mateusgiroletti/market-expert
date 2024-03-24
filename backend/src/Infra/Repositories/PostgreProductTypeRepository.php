@@ -40,7 +40,13 @@ class PostgreProductTypeRepository implements ProductTypeRepositoryInterface
                 $newProductType->setName($row['name']);
                 $newProductType->setProductId($row['product_id']);
 
-                $productsTypesArray[] = $newProductType;
+                $newProductTypeItem = [
+                    'id' => $newProductType->getId(),
+                    'name' => $newProductType->getName(),
+                    'product_id' => $newProductType->getProductId(),
+                ];
+    
+                $productsTypesArray[] = $newProductTypeItem;
             }
 
             return $productsTypesArray;
