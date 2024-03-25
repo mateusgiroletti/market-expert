@@ -12,7 +12,7 @@ export default function PercentualInput({ value, onChange, onRemove }: Percentua
                 <input
                     type="number"
                     value={value}
-                    onChange={(e) => onChange(parseFloat(e.target.value))}
+                    onChange={(e) => onChange(parseInt(e.target.value))}
                     className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500"
                 />
                 <button

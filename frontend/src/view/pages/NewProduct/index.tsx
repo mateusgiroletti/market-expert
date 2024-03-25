@@ -56,7 +56,7 @@ export default function NewProduct() {
                     <label htmlFor="price" className="block text-gray-700">Preço:</label>
                     <input type="number" id="price" value={price} onChange={handlePriceChange} className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500" />
                 </div>
-                <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Criar Produto</button>
+                <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Criar</button>
             </form>
         </div>
     )

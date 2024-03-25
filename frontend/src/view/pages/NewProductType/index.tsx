@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { z } from "zod";
 import { useLocation, useNavigate } from "react-router-dom";
 import PercentualInput from "./components/PercentualInput";
@@ -14,13 +14,12 @@ export default function NewProductType() {
     const productId = searchParams.get("productId");
 
     const [name, setName] = useState<string>('');
-    const [percentuais, setPercentuais] = useState<number[]>([0]);
-
+    const [percentages, setPercentages] = useState<number[]>([]);
 
     const navigate = useNavigate();
 
     function addPercentualInputComponent() {
-        setPercentuais([...percentuais, 0]);
+        setPercentages([...percentages, 0]);
     }
 
     function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -28,19 +27,26 @@ export default function NewProductType() {
     };
 
     function handlePercentualChange(index: number, value: number) {
-        const newPercentuais = [...percentuais];
+        const newPercentuais = [...percentages];
         newPercentuais[index] = value;
-        setPercentuais(newPercentuais);
+        setPercentages(newPercentuais);
     };
 
     function handleRemovePercentualInputComponent(index: number) {
-        const newPercentuais = [...percentuais];
+        const newPercentuais = [...percentages];
         newPercentuais.splice(index, 1);
-        setPercentuais(newPercentuais);
+        setPercentages(newPercentuais);
     }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        const hasZeroPercentage = percentages.some(percentual => percentual === 0);
+
+        if (hasZeroPercentage) {
+            alert('Por favor, preencha todos os campos de porcentagem com valores diferentes de zero.');
+            return;
+        }
 
         try {
             const validatedProductType = productTypeSchema.parse({
@@ -50,7 +56,7 @@ export default function NewProductType() {
             await productTypeService.create({
                 name: validatedProductType.name,
                 product_id: parseInt(String(productId)),
-                percentages: percentuais
+                percentages: percentages
             });
 
             navigate("/");
@@ -71,7 +77,7 @@ export default function NewProductType() {
                     <label htmlFor="name" className="block text-gray-700">Nome:</label>
                     <input type="text" id="name" onChange={handleNameChange} className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500" />
                 </div>
-                {percentuais.map((percentual, index) => (
+                {percentages.map((percentual, index) => (
                     <PercentualInput
                         key={index}
                         value={percentual}
