@@ -1,34 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PercentualInput from "./components/PercentualInput";
+import { productTypeService } from "../../../app/services/productTypes";
 
 const productTypeSchema = z.object({
-    name: z.string().min(1, 'O campo Nome é obrigatório').max(100, 'Limite de 100 caracteres excedido!'),
-    percentual: z.array(z.number().positive('O campo percentual precisa ser positivo')).min(1, 'É necessário ao menos um percentual'),
+    name: z.string().min(1, 'O campo Nome é obrigatório').max(100, 'Limite de 100 caracteres excedido!')
 });
 
 export default function NewProductType() {
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const productId = searchParams.get("productId");
+
     const [name, setName] = useState<string>('');
     const [percentuais, setPercentuais] = useState<number[]>([0]);
 
+
     const navigate = useNavigate();
+
+    function addPercentualInputComponent() {
+        setPercentuais([...percentuais, 0]);
+    }
 
     function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
         setName(event.target.value);
     };
 
-    function handlePriceChange(index: number, value: number) {
+    function handlePercentualChange(index: number, value: number) {
         const newPercentuais = [...percentuais];
         newPercentuais[index] = value;
         setPercentuais(newPercentuais);
     };
 
-    function addPercentual() {
-        setPercentuais([...percentuais, 0]);
-    }
-
-    function removePercentual(index: number) {
+    function handleRemovePercentualInputComponent(index: number) {
         const newPercentuais = [...percentuais];
         newPercentuais.splice(index, 1);
         setPercentuais(newPercentuais);
@@ -40,12 +45,15 @@ export default function NewProductType() {
         try {
             const validatedProductType = productTypeSchema.parse({
                 name,
-                percentual: percentuais,
             });
 
-            // await productTypeService.create(validatedProductType);
+            await productTypeService.create({
+                name: validatedProductType.name,
+                product_id: parseInt(String(productId)),
+                percentages: percentuais
+            });
 
-            navigate("/");
+            // navigate("/");
         } catch (error) {
             if (error instanceof z.ZodError) {
                 alert('Erro nos campos');
@@ -67,11 +75,11 @@ export default function NewProductType() {
                     <PercentualInput
                         key={index}
                         value={percentual}
-                        onChange={(value) => handlePriceChange(index, value)}
-                        onRemove={() => removePercentual(index)}
+                        onChange={(value) => handlePercentualChange(index, value)}
+                        onRemove={() => handleRemovePercentualInputComponent(index)}
                     />
                 ))}
-                <button type="button" onClick={addPercentual} className="mb-4 w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:bg-green-600">Adicionar Novo Percentual</button>
+                <button type="button" onClick={addPercentualInputComponent} className="mb-4 w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:bg-green-600">Adicionar Novo Percentual</button>
                 <button type="submit" className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Criar</button>
             </form>
         </div>
