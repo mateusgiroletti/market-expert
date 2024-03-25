@@ -27,37 +27,25 @@ class FindProductUseCase
     {
         $productFromRepo = $this->productRepo->findById($productId);
 
-        $productResponse = [
-            'id' => $productFromRepo->getId(),
-            'name' => $productFromRepo->getName(),
-            'product_types' => [],
-        ];
-
         $productTypeInfo = $this->productTypeRepo->findAllByProductId($productFromRepo->getId());
+        $percentages = 0;
+
         if (!empty($productTypeInfo)) {
-
-
             foreach ($productTypeInfo as $key => $productType) {
-                $porcentagens = [];
-
-                $productResponse['product_types'][] = [
-                    'product_type_id' => $productType['id'],
-                    'name' => $productType['name'],
-                    'porcentagens' => []
-                ];
-
                 $productTypeTaxesInfo = $this->productTypeRepoTaxes->findAllByProductTypeId($productType['id']);
-
                 if (!empty($productTypeTaxesInfo)) {
                     foreach ($productTypeTaxesInfo as $productTaxes) {
-                        array_push($porcentagens, $productTaxes['percentual']);
+                        $percentages += $productTaxes['percentual'];
                     }
                 }
-
-                $productResponse['product_types'][$key]['porcentagens'] = $porcentagens;
             }
         }
 
+        $productResponse = [
+            'id' => $productFromRepo->getId(),
+            'name' => $productFromRepo->getName(),
+            'percentages' => $percentages
+        ];
 
         return $productResponse;
     }
