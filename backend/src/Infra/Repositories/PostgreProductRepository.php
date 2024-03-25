@@ -77,27 +77,4 @@ class PostgreProductRepository implements ProductRepositoryInterface
             return false;
         }
     }
-
-    public function update(int $productId, array $fieldsToUpdate): bool
-    {
-        try {
-            $sql = "UPDATE products SET ";
-            $params = [];
-
-            foreach ($fieldsToUpdate as $key => $value) {
-                $sql .= "$key = ?, ";
-                $params[] = $value;
-            }
-
-            $sql = rtrim($sql, ', ') . " WHERE id = ?";
-            $params[] = $productId;
-
-            $stmt = $this->db->prepare($sql);
-            return $stmt->execute($params);
-        } catch (\PDOException $e) {
-            http_response_code(400);
-            throw $e;
-            return false;
-        }
-    }
 }

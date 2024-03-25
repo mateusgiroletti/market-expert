@@ -7,6 +7,7 @@ class CreateProductTypeInputDto
     public function __construct(
         public int $productId,
         public string $name,
+        public ?array $percentages,
     ) {
     }
 }

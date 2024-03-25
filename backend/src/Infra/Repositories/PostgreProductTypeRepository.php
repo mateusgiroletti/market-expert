@@ -45,7 +45,7 @@ class PostgreProductTypeRepository implements ProductTypeRepositoryInterface
                     'name' => $newProductType->getName(),
                     'product_id' => $newProductType->getProductId(),
                 ];
-    
+
                 $productsTypesArray[] = $newProductTypeItem;
             }
 
@@ -57,15 +57,28 @@ class PostgreProductTypeRepository implements ProductTypeRepositoryInterface
         }
     }
 
-    public function insert(ProductType $productType): bool
+    public function insert(ProductType $productType, ?array $productTypeTaxes): bool
     {
         try {
+            $this->db->beginTransaction();
+
             $sql = "INSERT INTO product_types (name, product_id) VALUES (?, ?)";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$productType->getName(), $productType->getProductId()]);
 
+            $productTypeId = $this->db->lastInsertId();
+
+            foreach ($productTypeTaxes as $productTypeTaxe) {
+                $sqlInsertProductTypeTaxe = "INSERT INTO product_type_taxes (product_type_id, percentual) VALUES (?, ?)";
+                $stmtInsertProductTypeTaxe = $this->db->prepare($sqlInsertProductTypeTaxe);
+                $stmtInsertProductTypeTaxe->execute([$productTypeId, $productTypeTaxe->getPercentual()]);
+            }
+
+            $this->db->commit();
             return true;
         } catch (\PDOException $e) {
+            $this->db->rollBack();
+
             http_response_code(400);
             throw $e;
             return false;

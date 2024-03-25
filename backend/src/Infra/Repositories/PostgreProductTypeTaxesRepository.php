@@ -57,7 +57,6 @@ class PostgreProductTypeTaxesRepository implements ProductTypeTaxesRepositoryInt
         }
     }
 
-
     public function insert(ProductTypeTaxes $productType): bool
     {
         try {

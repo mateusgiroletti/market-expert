@@ -4,6 +4,7 @@ namespace App\UseCases\ProductType;
 
 use App\UseCases\DTO\ProductType\CreateProductTypeInputDto;
 use Domain\Entity\ProductType;
+use Domain\Entity\ProductTypeTaxes;
 use Domain\Repository\ProductTypeRepositoryInterface;
 
 class CreateProductTypeUseCase
@@ -21,8 +22,21 @@ class CreateProductTypeUseCase
         $productType->setName($input->name);
         $productType->setProductId($input->productId);
 
+        $percentages = $input->percentages;
+        $productTypeTaxes = [];
+
+        if (!empty($percentages)) {
+            foreach ($percentages as $percentual) {
+                $productTypeTaxe = new ProductTypeTaxes();
+                $productTypeTaxe->setPercentual($percentual);
+
+                $productTypeTaxes[] = $productTypeTaxe;
+            }
+        }
+
         $isProductTypeCreate = $this->productTypeRepo->insert(
-            $productType
+            $productType,
+            $productTypeTaxes
         );
 
         return $isProductTypeCreate;
