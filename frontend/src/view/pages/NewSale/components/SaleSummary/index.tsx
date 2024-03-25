@@ -1,12 +1,30 @@
-import { SaleItemProps } from "../SaleItem";
+import formatToCurrencyBRL from "../../../../../helpers/formatToCurrencyBRL";
 
-export default function SaleSummary({ items }: SaleItemProps[]) {
-    console.log(items);
-    // Calcula o valor total da compra somando os valores totais de cada item
+interface SaleProductTaxInfo {
+    productTaxes: number;
+    productTotalWithTax: number;
+}
+
+export default function SaleSummary({ items }) {
     const totalSaleValue = items.reduce((acc, product) => acc + product.price * product.quantity, 0);
+    const totalTaxes = items.reduce((acc, product) => acc + (product.price * product.quantity * product.totalTaxPercentage) / 100, 0);
+    const totalSale = totalSaleValue + totalTaxes;
 
-    // Calcula o valor total dos impostos somando os valores de impostos de cada product
-    const totalTaxAmount = items.reduce((acc, product) => acc + (product.price * product.quantity * product.totalTaxPercentage) / 100, 0);
+    function calculateTotalProductWithTaxes(
+        price: number,
+        quantity: number,
+        totalTaxPercentage: number
+    ): SaleProductTaxInfo {
+        const productValue = (price * quantity);
+        const productTaxes = productValue * (totalTaxPercentage / 100);
+
+        const productTotalWithTax = productValue + productTaxes;
+
+        return {
+            productTaxes,
+            productTotalWithTax
+        }
+    }
 
     return (
         <div className="bg-gray-200 p-4 mb-4 rounded">
@@ -22,19 +40,26 @@ export default function SaleSummary({ items }: SaleItemProps[]) {
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((product, index) => (
-                        <tr key={index}>
-                            <td className="border border-gray-400 px-4 py-2">{product.name}</td>
-                            <td className="border border-gray-400 px-4 py-2">${product.price}</td>
-                            <td className="border border-gray-400 px-4 py-2">{product.quantity}</td>
-                            <td className="border border-gray-400 px-4 py-2">${(product.price * product.quantity).toFixed(2)}</td>
-                            <td className="border border-gray-400 px-4 py-2">${((product.price * product.quantity * product.totalTaxPercentage) / 100).toFixed(2)}</td>
-                        </tr>
-                    ))}
+                    {items.map((product, index) => {
+                        const { productTaxes, productTotalWithTax } = calculateTotalProductWithTaxes(
+                            product.price,
+                            product.quantity,
+                            product.totalTaxPercentage
+                        );
+                        return (
+                            <tr key={index}>
+                                <td className="border border-gray-400 px-4 py-2">{product.name}</td>
+                                <td className="border border-gray-400 px-4 py-2">{formatToCurrencyBRL(product.price)}</td>
+                                <td className="border border-gray-400 px-4 py-2">{product.quantity}</td>
+                                <td className="border border-gray-400 px-4 py-2">{formatToCurrencyBRL(productTotalWithTax)}</td>
+                                <td className="border border-gray-400 px-4 py-2">{formatToCurrencyBRL(productTaxes)}</td>
+                            </tr>
+                        )
+                    })}
                 </tbody>
             </table>
-            <p>Total da Compra: ${totalSaleValue.toFixed(2)}</p>
-            <p>Total de Impostos: ${totalTaxAmount.toFixed(2)}</p>
+            <p>Total da Compra: {formatToCurrencyBRL(totalSale)}</p>
+            <p>Total de Impostos: {formatToCurrencyBRL(totalTaxes)}</p>
         </div>
     );
 }

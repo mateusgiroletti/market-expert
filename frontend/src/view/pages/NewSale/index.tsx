@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 import { productService } from "../../../app/services/products";
 import { Product } from "../../../app/entities/Product";
-import SaleItem, { SaleItemProps } from "./components/SaleItem";
 import SaleSummary from "./components/SaleSummary";
+import { saleService } from "../../../app/services/sales";
 
 export default function NewSale() {
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedProduct, setSelectedProduct] = useState('');
     const [quantity, setQuantity] = useState(1);
-    const [items, setItems] = useState<SaleItemProps[]>([]);
+    const [items, setItems] = useState([]);
 
     // Função para buscar os produtos no servidor
     const loadProducts = useCallback(async () => {
@@ -25,14 +25,10 @@ export default function NewSale() {
         loadProducts();
     }, [loadProducts]);
 
-
-    // Função para adicionar um novo item de venda
     async function handleAddItem() {
 
         if (selectedProduct) {
             const productResponse = await productService.getById(parseInt(selectedProduct));
-
-            console.log(productResponse);
 
             if (productResponse) {
                 const product = {
@@ -48,6 +44,30 @@ export default function NewSale() {
         }
 
     };
+
+    async function handleNewSale() {
+        try {
+
+            if(items.length === 0){
+                alert('Favor inserir ao mínimo um item a venda!');
+                return;
+            }
+
+            const createSalesParams = {
+                products: items.map(item => ({
+                    product_id: item.productId,
+                    amount: item.quantity
+                })),
+            };
+
+            await saleService.create(createSalesParams);
+
+            alert('Venda cadastrada com sucesso!');
+        } catch (error) {
+            alert('Erro ao cadastrar venda!');
+            console.log(error);
+        }
+    }
 
     return (
         <div className="container mx-auto py-8">
@@ -67,16 +87,8 @@ export default function NewSale() {
                     <input type="number" id="quantity" value={quantity} onChange={(e) => setQuantity(parseInt(e.target.value))} className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500" />
                 </div>
                 <button onClick={handleAddItem} className="mb-4 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Adicionar Item</button>
-                <div>
-                    {items.map((item, index) => (
-                        <SaleItem
-                            key={index}
-                            product={item}
-                        />
-                    ))}
-                    <SaleSummary items={items} />
-
-                </div>
+                <button onClick={handleNewSale} className="mb-4 w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:bg-green-600">Salvar Venda</button>
+                <SaleSummary items={items} />
             </div>
         </div>
     );
