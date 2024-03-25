@@ -53,7 +53,7 @@ export default function NewProductType() {
                 percentages: percentuais
             });
 
-            // navigate("/");
+            navigate("/");
         } catch (error) {
             if (error instanceof z.ZodError) {
                 alert('Erro nos campos');
