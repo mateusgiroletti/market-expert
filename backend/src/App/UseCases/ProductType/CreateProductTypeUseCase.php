@@ -27,10 +27,12 @@ class CreateProductTypeUseCase
 
         if (!empty($percentages)) {
             foreach ($percentages as $percentual) {
-                $productTypeTaxe = new ProductTypeTaxes();
-                $productTypeTaxe->setPercentual($percentual);
+                if (!empty($percentual)) {
+                    $productTypeTaxe = new ProductTypeTaxes();
+                    $productTypeTaxe->setPercentual($percentual);
 
-                $productTypeTaxes[] = $productTypeTaxe;
+                    $productTypeTaxes[] = $productTypeTaxe;
+                }
             }
         }
 
