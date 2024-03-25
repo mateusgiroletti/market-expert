@@ -42,7 +42,7 @@ class ProductTypeController
         $input = new CreateProductTypeInputDto(
             productId: $formData['product_id'],
             name: $formData['name'],
-            percentages: !empty($formData['percentages']) ?: null
+            percentages: !empty($formData['percentages']) ? $formData['percentages'] : null
         );
 
         $isProductTypeCreate = $useCase->execute($input);

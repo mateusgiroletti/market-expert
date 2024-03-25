@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
-import Product from "./Product";
+
 import { productService } from "../../../../app/services/products";
-import { Product as ProductEntity } from "../../../../app/entities/Product";
+import { Product } from "../../../../app/entities/Product";
+
+import ProductElement from "./ProductElement";
 
 export default function ProductList() {
-    const [products, setProducts] = useState<ProductEntity[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
 
     const loadProducts = useCallback(async () => {
         try {
-
             const productList = await productService.getAll();
 
             setProducts(productList);
@@ -30,7 +31,7 @@ export default function ProductList() {
             <h1 className="text-3xl font-bold mb-4">Lista de Produtos</h1>
             <div className="grid grid-cols-3 gap-4">
                 {products.map(product => (
-                    <Product
+                    <ProductElement
                         key={product.id}
                         product={product}
                     />
