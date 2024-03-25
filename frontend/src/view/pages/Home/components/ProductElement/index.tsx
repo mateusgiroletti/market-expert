@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { Product } from "../../../../../app/entities/Product";
-import { PlusCircle } from "@phosphor-icons/react";
 import formatToCurrencyBRL from "../../../../../helpers/formatToCurrencyBRL";
 
 interface Productprops {
@@ -14,8 +13,11 @@ export default function ProductElement({ product }: Productprops) {
                 <h2 className="text-xl font-bold mb-2">{product.name}</h2>
                 <p className="text-gray-900 font-bold mt-2">{formatToCurrencyBRL(product.price)}</p>
             </div>
-            <Link to={`/new-product-type?productId=${product.id}`}>
-                <PlusCircle className="h-8 w-8 text-blue-500 cursor-pointer" />
+            <Link
+                to={`/new-product-type?productId=${product.id}`}
+                className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 text-white py-2 px-4 rounded"
+            >
+                Adicionar Tipo de produto
             </Link>
         </div>
     );
