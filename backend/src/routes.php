@@ -10,6 +10,7 @@ $router = new Router();
 
 // Routes products
 $router->get('/products', ProductController::class, 'index');
+$router->get('/productsById', ProductController::class, 'show');
 $router->post('/products', ProductController::class, 'store');
 
 // Routes products Type
