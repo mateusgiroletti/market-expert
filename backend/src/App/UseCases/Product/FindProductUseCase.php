@@ -44,6 +44,7 @@ class FindProductUseCase
         $productResponse = [
             'id' => $productFromRepo->getId(),
             'name' => $productFromRepo->getName(),
+            'price' => $productFromRepo->getPrice(),
             'total_percentage_tax' => $totalPercentageTax
         ];
 
