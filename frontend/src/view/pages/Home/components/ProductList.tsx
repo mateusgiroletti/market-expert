@@ -14,10 +14,6 @@ export default function ProductList() {
 
             setProducts(productList);
         } catch (error) {
-            if (error instanceof DOMException && error.name === "AbortError") {
-                return;
-            }
-
             setProducts([]);
         }
     }, []);
