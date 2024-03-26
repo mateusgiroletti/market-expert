@@ -2,7 +2,7 @@ import { httpClient } from "../httpClient";
 
 interface ProductResponse {
     id: number;
-    price: string;
+    price: number;
     name: string;
     total_percentage_tax: number;
 }

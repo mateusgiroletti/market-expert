@@ -1,33 +1,20 @@
 import formatToCurrencyBRL from "../../../../../helpers/formatToCurrencyBRL";
+import { saleItenInterface } from "../../useNewSale";
+import useSaleSummary from "./useSaleSummary";
 
-interface SaleProductTaxInfo {
-    productTaxes: number;
-    productTotalWithTax: number;
+export interface itensSaleSummaryInterface {
+    itens: saleItenInterface[]
 }
 
-export default function SaleSummary({ items }) {
-    const totalSaleValue = items.reduce((acc, product) => acc + product.price * product.quantity, 0);
-    const totalTaxes = items.reduce((acc, product) => acc + (product.price * product.quantity * product.totalTaxPercentage) / 100, 0);
-    const totalSale = totalSaleValue + totalTaxes;
-
-    function calculateTotalProductWithTaxes(
-        price: number,
-        quantity: number,
-        totalTaxPercentage: number
-    ): SaleProductTaxInfo {
-        const productValue = (price * quantity);
-        const productTaxes = productValue * (totalTaxPercentage / 100);
-
-        const productTotalWithTax = productValue + productTaxes;
-
-        return {
-            productTaxes,
-            productTotalWithTax
-        }
-    }
+export default function SaleSummary({ itens }: itensSaleSummaryInterface) {
+    const {
+        calculateTotalProductWithTaxes,
+        totalSale,
+        totalTaxes
+    } = useSaleSummary(itens);
 
     return (
-        <div className="bg-gray-200 p-4 mb-4 rounded">
+        <div className="p-4 mb-4 rounded">
             <h2 className="text-lg font-bold mb-2">Resumo da Venda</h2>
             <table className="w-full border-collapse">
                 <thead>
@@ -40,7 +27,7 @@ export default function SaleSummary({ items }) {
                     </tr>
                 </thead>
                 <tbody>
-                    {items.map((product, index) => {
+                    {itens.map((product, index) => {
                         const { productTaxes, productTotalWithTax } = calculateTotalProductWithTaxes(
                             product.price,
                             product.quantity,
@@ -58,8 +45,8 @@ export default function SaleSummary({ items }) {
                     })}
                 </tbody>
             </table>
-            <p>Total da Compra: {formatToCurrencyBRL(totalSale)}</p>
-            <p>Total de Impostos: {formatToCurrencyBRL(totalTaxes)}</p>
+            <p>Total da Compra: <b>{formatToCurrencyBRL(totalSale)}</b></p>
+            <p>Total de Impostos: <b>{formatToCurrencyBRL(totalTaxes)}</b></p>
         </div>
     );
 }
