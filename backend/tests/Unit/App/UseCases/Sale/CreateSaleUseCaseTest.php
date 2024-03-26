@@ -49,7 +49,11 @@ class CreateSaleUseCaseTest extends TestCase
 
         $productTypeTaxesRepositoryMock->expects($this->atLeastOnce())
             ->method('findAllByProductTypeId')
-            ->willReturn([]);
+            ->willReturn([
+                'id' => 1,
+                'product_type_id' => 1,
+                'percentual' => 10
+            ]);
 
         $saleRepositoryMock->expects($this->once())
             ->method('insert')

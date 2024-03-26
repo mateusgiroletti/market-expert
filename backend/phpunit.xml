@@ -15,7 +15,7 @@
     ignoreDeprecatedCodeUnits="true"
     disableCodeCoverageIgnore="true">
     <report>
-      <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90" />
+      <html outputDirectory="coverage" lowUpperBound="50" highLowerBound="90" />
     </report>
   </coverage>
   <php>
