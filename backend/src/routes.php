@@ -1,10 +1,10 @@
 <?php
 
 use Config\Router;
-use Infra\Controllers\ProductController;
-use Infra\Controllers\ProductTypeController;
-use Infra\Controllers\ProductTypeTaxesController;
-use Infra\Controllers\SaleController;
+use Controllers\ProductController;
+use Controllers\ProductTypeController;
+use Controllers\ProductTypeTaxesController;
+use Controllers\SaleController;
 
 $router = new Router();
 
@@ -17,9 +17,11 @@ $router->post('/products', ProductController::class, 'store');
 $router->get('/product-types', ProductTypeController::class, 'index');
 $router->post('/product-types', ProductTypeController::class, 'store');
 
+
 // Routes products Type Taxes
 $router->get('/product-type-taxes', ProductTypeTaxesController::class, 'index');
 $router->post('/product-type-taxes', ProductTypeTaxesController::class, 'store');
+
 
 // Routes Sales
 $router->post('/sales', SaleController::class, 'store');

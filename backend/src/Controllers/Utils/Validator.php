@@ -1,6 +1,6 @@
 <?php
 
-namespace Infra\Utils;
+namespace Controllers\Utils;
 
 use ErrorException;
 

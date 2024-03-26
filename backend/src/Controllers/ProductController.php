@@ -1,37 +1,31 @@
 <?php
 
-namespace Infra\Controllers;
+namespace Controllers;
 
 use App\UseCases\DTO\Product\CreateProductInputDto;
 use App\UseCases\Product\CreateProductUseCase;
 use App\UseCases\Product\FindProductUseCase;
 use App\UseCases\Product\ListProductUseCase;
-use Infra\Database\DbConnection;
-use Infra\Repositories\PostgreProductRepository;
-use Infra\Repositories\PostgreProductTypeRepository;
-use Infra\Repositories\PostgreProductTypeTaxesRepository;
-use Infra\Utils\Validator;
+use Controllers\Utils\Validator;
 
 class ProductController
 {
-    private $dbConnection;
-    private $productRepo;
-    private $productTypeRepo;
-    private $productTypeTaxeRepo;
+    private ListProductUseCase $listProductUseCase;
+    private FindProductUseCase $findProductUseCase;
+    private CreateProductUseCase $createProductUseCase;
 
-    public function __construct()
-    {
-        $this->dbConnection = new DbConnection();
-        $this->productRepo = new PostgreProductRepository($this->dbConnection);
-        $this->productTypeRepo = new PostgreProductTypeRepository($this->dbConnection);
-        $this->productTypeTaxeRepo = new PostgreProductTypeTaxesRepository($this->dbConnection);
+    public function __construct(
+        ListProductUseCase $listProductUseCase,
+        FindProductUseCase $findProductUseCase,
+        CreateProductUseCase $createProductUseCase
+    ) {
+        $this->listProductUseCase = $listProductUseCase;
+        $this->findProductUseCase = $findProductUseCase;
+        $this->createProductUseCase = $createProductUseCase;
     }
-
     public function index()
     {
-        $useCase = new ListProductUseCase($this->productRepo);
-
-        $products = $useCase->execute();
+        $products = $this->listProductUseCase->execute();
 
         return json_encode($products);
     }
@@ -40,13 +34,7 @@ class ProductController
     {
         $productId = $formData['product_id'];
 
-        $useCase = new FindProductUseCase(
-            $this->productRepo,
-            $this->productTypeRepo,
-            $this->productTypeTaxeRepo
-        );
-
-        $products = $useCase->execute($productId);
+        $products = $this->findProductUseCase->execute($productId);
 
         return json_encode($products);
     }
@@ -58,14 +46,12 @@ class ProductController
         Validator::validateMaxLength($formData, ['name'], 100);
         Validator::validateMinLength($formData, ['name'], 2);
 
-        $useCase = new CreateProductUseCase($this->productRepo);
-
         $input = new CreateProductInputDto(
             name: $formData['name'],
             price: $formData['price']
         );
 
-        $newProduct = $useCase->execute($input);
+        $newProduct = $this->createProductUseCase->execute($input);
 
         if (!$newProduct) {
             http_response_code(400);

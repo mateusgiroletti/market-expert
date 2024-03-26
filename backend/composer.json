@@ -9,9 +9,11 @@
     "autoload": {
         "psr-4": {
             "Domain\\": "src/Domain/",
+            "Controllers\\": "src/Controllers/",
             "App\\": "src/App/",
             "Infra\\": "src/Infra/",
-            "Config\\": "src/Config/"
+            "Config\\": "src/Config/",
+            "Factories\\": "src/Factories/"
         }
     },
     "autoload-dev": {

@@ -2,6 +2,8 @@
 
 namespace Config;
 
+use Factories\ControllerFactory;
+
 class Router
 {
     protected $routes = [];
@@ -44,7 +46,7 @@ class Router
 
         if (isset($this->routes[$method][$urlWithoutQuery])) {
             $handler = $this->routes[$method][$urlWithoutQuery];
-            $controller = new $handler['controller']();
+            $controller = ControllerFactory::create($handler['controller']);
 
             // Lê o corpo da requisição
             $jsonPayload = file_get_contents('php://input');

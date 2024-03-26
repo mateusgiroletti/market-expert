@@ -1,32 +1,30 @@
 <?php
 
-namespace Infra\Controllers;
+namespace Controllers;
 
 use App\UseCases\DTO\ProductType\CreateProductTypeInputDto;
 use App\UseCases\ProductType\CreateProductTypeUseCase;
 use App\UseCases\ProductType\ListProductTypeUseCase;
-use Infra\Database\DbConnection;
-use Infra\Repositories\PostgreProductTypeRepository;
-use Infra\Utils\Validator;
+use Controllers\Utils\Validator;
 
 class ProductTypeController
 {
-    private $dbConnection;
-    private $productTypeRepo;
+    private ListProductTypeUseCase $listProductTypeUseCase;
+    private CreateProductTypeUseCase $createProductTypeUseCase;
 
-    public function __construct()
-    {
-        $this->dbConnection = new DbConnection();
-        $this->productTypeRepo = new PostgreProductTypeRepository($this->dbConnection);
+    public function __construct(
+        ListProductTypeUseCase  $listProductTypeUseCase,
+        CreateProductTypeUseCase $createProductTypeUseCase
+    ) {
+        $this->listProductTypeUseCase = $listProductTypeUseCase;
+        $this->createProductTypeUseCase = $createProductTypeUseCase;
     }
 
     public function index($formData)
     {
         $productId = $formData['product_id'];
 
-        $useCase = new ListProductTypeUseCase($this->productTypeRepo);
-
-        $products = $useCase->execute($productId);
+        $products = $this->listProductTypeUseCase->execute($productId);
 
         return json_encode($products);
     }
@@ -37,15 +35,13 @@ class ProductTypeController
         Validator::validateMaxLength($formData, ['name'], 100);
         Validator::validateMinLength($formData, ['name'], 2);
 
-        $useCase = new CreateProductTypeUseCase($this->productTypeRepo);
-
         $input = new CreateProductTypeInputDto(
             productId: $formData['product_id'],
             name: $formData['name'],
             percentages: !empty($formData['percentages']) ? $formData['percentages'] : null
         );
 
-        $isProductTypeCreate = $useCase->execute($input);
+        $isProductTypeCreate = $this->createProductTypeUseCase->execute($input);
 
         if (!$isProductTypeCreate) {
             http_response_code(400);
