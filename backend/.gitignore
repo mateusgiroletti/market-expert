@@ -20,3 +20,4 @@ yarn-error.log
 .gitconfig
 /storage/cloud
 .phpunit.cache/
+coverage/
