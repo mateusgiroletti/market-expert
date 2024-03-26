@@ -20,7 +20,6 @@ class SaleController
     {
         Validator::validateNotEmpty($formData, ['products']);
 
-
         $input = new CreateSaleInputDto(
             products: $formData['products'],
         );
