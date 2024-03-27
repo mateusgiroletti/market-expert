@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import {renderHook, act } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import { useNewProduct } from '../useNewProduct';
