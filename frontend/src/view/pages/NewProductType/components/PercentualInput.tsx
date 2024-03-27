@@ -9,7 +9,7 @@ interface PercentualInputProps {
 
 export default function PercentualInput({ value, onChange, onRemove }: PercentualInputProps) {
     return (
-        <div className="mb-4">
+        <div className="mb-4" data-testid="percentual-input">
             <label className="block text-gray-700">Porcentagem do imposto:</label>
             <div className="flex">
                 <Input
@@ -17,6 +17,7 @@ export default function PercentualInput({ value, onChange, onRemove }: Percentua
                     value={value}
                     onChange={(e) => onChange(parseInt(e.target.value))}
                     className="focus:outline-none focus:border-blue-500"
+                    data-testid="input-id"
                 />
                 <Button
                     type="button"
