@@ -25,7 +25,6 @@ export default function NewProduct() {
                             value={name}
                             onChange={handleNameChange}
                         />
-
                     </div>
                     <div className="mb-4">
                         <label
