@@ -4,7 +4,7 @@ import { z } from "zod";
 
 import { productTypeService } from "../../../app/services/productTypes";
 
-export default function useNewProductType() {
+export function useNewProductType() {
 
     const productTypeSchema = z.object({
         name: z.string().min(1, 'O campo Nome é obrigatório').max(100, 'Limite de 100 caracteres excedido!')

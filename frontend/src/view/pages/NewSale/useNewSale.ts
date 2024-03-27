@@ -11,7 +11,7 @@ export interface saleItenInterface {
     totalTaxPercentage: number;
 }
 
-export default function useNewSale() {
+export function useNewSale() {
     const [products, setProducts] = useState<Product[]>([]);
     const [selectedProduct, setSelectedProduct] = useState('');
     const [quantity, setQuantity] = useState(1);

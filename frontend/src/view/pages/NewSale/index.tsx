@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import SaleSummary from "./components/SaleSummary";
-import useNewSale from "./useNewSale";
+import { useNewSale } from "./useNewSale";
 
 export default function NewSale() {
     const {

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import PercentualInput from "./components/PercentualInput";
-import useNewProductType from "./useNewProductType";
+import { useNewProductType } from "./useNewProductType";
 
 export default function NewProductType() {
     const {

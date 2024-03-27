@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import useNewProduct from "./useNewProduct";
+import { useNewProduct } from "./useNewProduct";
 
 export default function NewProduct() {
     const { handleSubmit, name, handleNameChange, price, handlePriceChange } = useNewProduct();

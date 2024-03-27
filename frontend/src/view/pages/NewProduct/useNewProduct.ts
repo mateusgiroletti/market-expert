@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { productService } from "../../../app/services/products";
 
-export default function useNewProduct() {
+export function useNewProduct() {
     const productSchema = z.object({
         name: z.string().min(1, 'O campo Nome é obrigatório').max(100, 'Limite de 100 caracteres excedido!'),
         price: z.number().positive('O campo preço precisa ser positivo'),
