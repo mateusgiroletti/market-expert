@@ -7,7 +7,6 @@ import { createMemoryHistory } from "history";
 import NewProduct from "..";
 import * as useNewProductHook from "../useNewProduct";
 
-
 describe("New Product", () => {
     it('renders new product form with inputs and buttons', () => {
         const useNewProductListSpy = vi.spyOn(useNewProductHook, "useNewProduct");
