@@ -1,11 +1,27 @@
 import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router-dom";
-import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import NewSale from "..";
+import * as useNewSaleHook from "../useNewSale";
 
 describe("New Sale", () => {
+    beforeAll(() => {
+        const useNewSaleSpy = vi.spyOn(useNewSaleHook, "useNewSale");
+
+        useNewSaleSpy.mockReturnValue({
+            selectedProduct: '1',
+            setSelectedProduct: vi.fn(),
+            products: [{ id: 1, price: 10, name: 'Product 1' }, { id: 1, price: 20, name: 'Product 2' }],
+            quantity: 2,
+            setQuantity: vi.fn(),
+            handleAddItem: vi.fn(),
+            handleNewSale: vi.fn(),
+            items: [{ productId: 1, name: 'Product 1', price: 10, quantity: 2, totalTaxPercentage: 10 }]
+        });
+    });
+
     it('renders NewSale component correctly', () => {
         render(
             <MemoryRouter>
@@ -21,5 +37,36 @@ describe("New Sale", () => {
         expect(screen.getByRole('button', { name: 'Voltar' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Criar' })).toBeInTheDocument();
         expect(screen.getByTestId('sale-summary')).toBeInTheDocument();
+    });
+
+    it('calls setSelectedProduct when select product is changed', async () => {
+
+        render(
+            <MemoryRouter>
+                <NewSale />
+            </MemoryRouter>
+        );
+
+        const selectElement = screen.getByTestId('select-product');
+        fireEvent.change(selectElement, { target: { value: '2' } });
+
+        waitFor(() => {
+            expect(useNewSaleSpy().setSelectedProduct).toHaveBeenCalledWith('2');
+        })
+    });
+
+    it('calls setQuantity when quantity input is changed', async() => {
+        render(
+            <MemoryRouter>
+                <NewSale />
+            </MemoryRouter>
+        );
+
+        const quantityInput = screen.getByLabelText('Quantidade:');
+        fireEvent.change(quantityInput, { target: { value: '5' } });
+
+        waitFor(() => {
+            expect(useNewSale().setQuantity).toHaveBeenCalledWith(5);
+        })
     });
 })
