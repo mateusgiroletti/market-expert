@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { MemoryRouter } from "react-router-dom";
-import { fireEvent, render, waitFor, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import Home from "..";
 
 describe("Home Page", () => {
