@@ -4,7 +4,6 @@ import { describe, expect, it, } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import ProductElement from "../components/ProductElement";
 
-
 describe('ProductElement Component', () => {
     it('renders product element with correct data', () => {
         const product = {

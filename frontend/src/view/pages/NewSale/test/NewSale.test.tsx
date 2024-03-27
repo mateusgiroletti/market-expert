@@ -55,7 +55,7 @@ describe("New Sale", () => {
         })
     });
 
-    it('calls setQuantity when quantity input is changed', async() => {
+    it('calls setQuantity when quantity input is changed', async () => {
         render(
             <MemoryRouter>
                 <NewSale />
@@ -66,7 +66,7 @@ describe("New Sale", () => {
         fireEvent.change(quantityInput, { target: { value: '5' } });
 
         waitFor(() => {
-            expect(useNewSale().setQuantity).toHaveBeenCalledWith(5);
+            expect(useNewSaleSpy().setQuantity).toHaveBeenCalledWith(5);
         })
     });
 })
