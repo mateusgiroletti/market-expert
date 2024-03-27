@@ -25,9 +25,9 @@ describe('ProductElement Component', () => {
         const productPriceElement = screen.getByText('R$ 20,00');
         expect(productPriceElement).toBeInTheDocument();
 
-        const addProductTypeLink = screen.getByText('Adicionar Tipo de produto');
-        expect(addProductTypeLink).toBeInTheDocument();
+        const addProductTypeButton = screen.getByText('Adicionar Tipo de produto');
+        expect(addProductTypeButton).toBeInTheDocument();
 
-        expect(addProductTypeLink).toHaveAttribute('href', '/new-product-type?productId=1');
+        expect(addProductTypeButton.closest('a')).toHaveAttribute('href', '/new-product-type?productId=1');
     });
 });

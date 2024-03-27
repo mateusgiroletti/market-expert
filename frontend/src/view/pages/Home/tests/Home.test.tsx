@@ -27,12 +27,12 @@ describe("Home Page", () => {
 
     it('renders ProductList component', () => {
         render(
-          <MemoryRouter>
-            <Home />
-          </MemoryRouter>
+            <MemoryRouter>
+                <Home />
+            </MemoryRouter>
         );
-    
+
         const productList = screen.getByTestId('product-list');
         expect(productList).toBeInTheDocument();
-      });
+    });
 })
