@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useNewProduct } from "./useNewProduct";
+import { Button } from "../../components/Button";
 
 export default function NewProduct() {
     const { handleSubmit, name, handleNameChange, price, handlePriceChange } = useNewProduct();
@@ -39,16 +40,21 @@ export default function NewProduct() {
                         />
                     </div>
                     <div className="flex justify-around">
-                        <Link
-                            to="/"
-                            className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 text-white py-2 px-16 rounded">
-                            Voltar
+                        <Link to="/">
+                            <Button
+                                type="submit"
+                                variant="blue"
+                            >
+                                Voltar
+                            </Button>
                         </Link>
-                        <button
+
+                        <Button
                             type="submit"
-                            className="bg-green-500 hover:bg-green-600 focus:outline-none focus:bg-green-600 text-white py-2 px-16 rounded">
+                            variant="green"
+                        >
                             Criar
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>

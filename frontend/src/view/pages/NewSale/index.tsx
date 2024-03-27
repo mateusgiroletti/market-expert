@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import SaleSummary from "./components/SaleSummary";
 import { useNewSale } from "./useNewSale";
+import { Button } from "../../components/Button";
 
 export default function NewSale() {
     const {
@@ -52,23 +53,28 @@ export default function NewSale() {
                             className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500"
                         />
                     </div>
-                    <button
+                    <Button
+                        variant="green"
                         onClick={handleAddItem}
-                        className="mb-4 w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 focus:outline-none focus:bg-green-600">
+                        className="mb-4 w-full"
+                    >
                         Adicionar Item
-                    </button>
+                    </Button>
                     <div className="flex justify-around">
-                        <Link
-                            to="/"
-                            className="bg-blue-500 hover:bg-blue-600 focus:outline-none focus:bg-blue-600 text-white py-2 px-16 rounded">
-                            Voltar
+                        <Link to="/">
+                            <Button
+                                variant="blue"
+                            >
+                                Voltar
+                            </Button>
                         </Link>
-                        <button
-                            onClick={handleNewSale}
 
-                            className="bg-green-500 hover:bg-green-600 focus:outline-none focus:bg-green-600 text-white py-2 px-16 rounded">
+                        <Button
+                            variant="green"
+                            onClick={handleNewSale}
+                        >
                             Criar
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>
