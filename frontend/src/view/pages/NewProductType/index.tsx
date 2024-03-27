@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import PercentualInput from "./components/PercentualInput";
 import { useNewProductType } from "./useNewProductType";
 import { Button } from "../../components/Button";
+import { Input } from "../../components/Input";
 
 export default function NewProductType() {
     const {
@@ -25,11 +26,11 @@ export default function NewProductType() {
                         >
                             Nome:
                         </label>
-                        <input
+                        <Input
                             type="text"
                             id="name"
                             onChange={handleNameChange}
-                            className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500"
+                            className="focus:outline-none focus:border-blue-500"
                         />
                     </div>
 

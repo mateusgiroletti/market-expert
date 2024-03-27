@@ -1,4 +1,5 @@
 import { Button } from "../../../components/Button";
+import { Input } from "../../../components/Input";
 
 interface PercentualInputProps {
     value: number;
@@ -11,11 +12,11 @@ export default function PercentualInput({ value, onChange, onRemove }: Percentua
         <div className="mb-4">
             <label className="block text-gray-700">Porcentagem do imposto:</label>
             <div className="flex">
-                <input
+                <Input
                     type="number"
                     value={value}
                     onChange={(e) => onChange(parseInt(e.target.value))}
-                    className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500"
+                    className="focus:outline-none focus:border-blue-500"
                 />
                 <Button
                     type="button"

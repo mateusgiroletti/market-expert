@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import SaleSummary from "./components/SaleSummary";
 import { useNewSale } from "./useNewSale";
 import { Button } from "../../components/Button";
+import { Input } from "../../components/Input";
 
 export default function NewSale() {
     const {
@@ -45,12 +46,12 @@ export default function NewSale() {
                             className="block text-gray-700"
                         >Quantidade:
                         </label>
-                        <input
+                        <Input
                             type="number"
                             id="quantity"
                             value={quantity}
                             onChange={(e) => setQuantity(parseInt(e.target.value))}
-                            className="w-full px-3 py-2 border rounded shadow-sm focus:outline-none focus:border-blue-500"
+                            className="focus:outline-none focus:border-blue-500"
                         />
                     </div>
                     <Button

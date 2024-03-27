@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useNewProduct } from "./useNewProduct";
 import { Button } from "../../components/Button";
+import { Input } from "../../components/Input";
 
 export default function NewProduct() {
     const { handleSubmit, name, handleNameChange, price, handlePriceChange } = useNewProduct();
@@ -17,13 +18,14 @@ export default function NewProduct() {
                         >
                             Nome:
                         </label>
-                        <input
+
+                        <Input
                             type="text"
                             id="name"
                             value={name}
                             onChange={handleNameChange}
-                            className="w-full px-3 py-2 border rounded shadow-sm"
                         />
+
                     </div>
                     <div className="mb-4">
                         <label
@@ -31,12 +33,11 @@ export default function NewProduct() {
                             className="block text-gray-700">
                             Preço:
                         </label>
-                        <input
+                        <Input
                             type="number"
                             id="price"
                             value={price}
                             onChange={handlePriceChange}
-                            className="w-full px-3 py-2 border rounded shadow-sm"
                         />
                     </div>
                     <div className="flex justify-around">
