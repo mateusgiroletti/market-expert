@@ -78,7 +78,10 @@ Executar
 ./vendor/bin/phpunit
 ```
 
-PRINT_COBERTURA_CODIGO
+<p align="center">
+    <img  src=".github/images/cobertura_codigo.png">
+</p>
+
 
 ## Rotas da API
 
