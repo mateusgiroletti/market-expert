@@ -17,11 +17,24 @@ Execute o docker container
 docker-compose up -d
 ```
 
+Conectar no container
+
+```console
+docker compose exec market-expert-app bash
+```
+
+Instalar dependencias e autoload
+
+```console
+composer dump-autoload && composer install
+```
+
 A aplicação estará disponível em
 
 ```console
 http://localhost:8080/
 ```
+
 ## Como Executar Sem Docker
 
 Necessário ter PHP instalado e o postgres.
@@ -29,6 +42,12 @@ Necessário ter PHP instalado e o postgres.
 Ajustar o .env para as credenciais necessárias conforme seu banco de dados.
 
 Fazer o dump da base de dados, o arquivo está na raiz do projeto backend (dump.sql)
+
+Instalar dependencias e autoload (necessário composer)
+
+```console
+composer dump-autoload && composer install
+```
 
 Usar o servidor nativo do PHP
 
