@@ -28,7 +28,7 @@ Este é um projeto/teste para a vaga de Full Stack (PHP/Reactjs) da SoftExpert.
    <li>Docker and docker compose</li>
 </ul>
 
-As instruções de uso estão [aqui](https://github.com/mateusgiroletti/market-expert/tree/main/backend).
+As instruções de uso estão [aqui](https://github.com/mateusgiroletti/market-expert/blob/main/backend/README.md).
 
 ### Front-end
 
@@ -42,4 +42,4 @@ As instruções de uso estão [aqui](https://github.com/mateusgiroletti/market-e
    <li>Vitest</li>
 </ul>
 
-As instruções de uso estão [aqui](https://github.com/mateusgiroletti/market-expert/tree/main/frontend).
+As instruções de uso estão [aqui](https://github.com/mateusgiroletti/market-expert/blob/main/frontend/README.md).
