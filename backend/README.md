@@ -64,7 +64,7 @@ Para a codificação, criei uma API HTTP simples, segui princípios da arquitetu
 
 ### Testes automatizados
 
-Criei testes atomizados, focando nos unitários, estão na raiz dentro de /tests.
+Criei testes automatizados, focando nos unitários, estão na raiz dentro de /tests.
 
 Para executar, basta conectar ao container:
 

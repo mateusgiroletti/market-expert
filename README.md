@@ -2,14 +2,22 @@
 
 Este é um projeto/teste para a vaga de Full Stack (PHP/Reactjs) da SoftExpert.
 
-Fincheck is an application for you to easily and intuitively control your finances. Making it possible to create your accounts and balances, create transactions (income/expenses), categorize them and monitor the movement of your money.
-
 ## Objetivo
 
-Desenvolver cadastro de produtos, tipos de cada produto, valotes percentuais de imposto dos tipos de produtos. Tela de venda onde é imformado o valor de cada item multiplicado pela quantidade adquirida e a quantidade pago de imposto em cada item, um totalizador do valor da compra e um
-totalizador do valor dos impostos; A venda deverá ser salva.
+<ul>
+   <li>Cadastro dos produtos;</li>
+   <li>Cadastro dos tipos de cada produto;</li>
+   <li>Cadastro dos valores percentuais de imposto dos tipos de produtos;</li>
+   <li>A tela de venda, onde serão informados os produtos e quantidades adquiridas;</li>
+   <li> 
+      O sistema deve apresentar o valor de cada item multiplicado pela quantidade adquirida e a
+      quantidade pago de imposto em cada item, um totalizador do valor da compra e um
+      totalizador do valor dos impostos;
+   </li>
+   <li>A venda deverá ser salva;</li>
+</ul>
 
-##  Tecnlogia usadas
+##  Tecnologias usadas
 
 ### Back-end
 
@@ -20,7 +28,7 @@ totalizador do valor dos impostos; A venda deverá ser salva.
    <li>Docker and docker compose</li>
 </ul>
 
-
+As instruções de uso estão [aqui](https://github.com/mateusgiroletti/market-expert/tree/main/backend).
 
 ### Front-end
 
@@ -34,36 +42,4 @@ totalizador do valor dos impostos; A venda deverá ser salva.
    <li>Vitest</li>
 </ul>
 
-## Como Executar
-
-Disponibilizei o build dentro da pasta frontend, caso tenho o docker basta executar os seguintes comando:
-
-```console
-cd frontend
-```
-Execute o docker container
-
-```console
-docker-compose up -d
-```
-
-A aplicação esta disponivel em
-
-```console
-http://localhost:3030/
-```
-
-Caso não tenha o docker podera utilizar alguma biblioteca que exponha um servidor node, exemplo: http-server
-
-Neste caso tenha o http-server instalado globalmente
-
-```console
-http-server -p 3030 ./dist
-```
-
-Caso queria executar a versão de desevolvimento:
-
-```console
-npm ci && npm run dev
-```
-
+As instruções de uso estão [aqui](https://github.com/mateusgiroletti/market-expert/tree/main/frontend).

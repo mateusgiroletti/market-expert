@@ -1,30 +1,94 @@
-# React + TypeScript + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Como resvolvi o problema
 
-Currently, two official plugins are available:
+Utilizei o React com typescript e tailwind para criar as telas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Criei componentes separados, aloquei a lógica para custom hooks e utilizei camada de service para comunicar com a API.
 
-## Expanding the ESLint configuration
+## Como Executar (Com Docker)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Disponibilizei o build como pedido no teste, esta na raiz do projeto frontend, pasta dist/
 
-- Configure the top-level `parserOptions` property like this:
+Para executar é possível utilizar o docker para expor um server node.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+Clonar este projeto em algum diretório e mudar para pasta frontend
+
+```console
+cd frontend
+```
+Execute o docker container
+
+```console
+docker-compose up -d
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+A aplicação estará disponível em
+
+```console
+http://localhost:3030/
+```
+
+## Como Executar Sem Docker
+
+Caso não tenha o docker podera utilizar alguma biblioteca que exponha um servidor node, exemplo: http-server
+
+Neste caso tenha o http-server instalado globalmente.
+
+```console
+http-server -p 3030 ./dist
+```
+
+A aplicação estará disponível em
+
+```console
+http://localhost:3030/
+```
+
+## Como Executar Desenvolvimento
+
+Também é possível executar o código em desenvolvimento.
+
+```console
+npm ci && npm run dev
+```
+
+### Testes automatizados
+
+Criei testes automatizados para os componentes das paginas e para seus custons hooks
+
+Para executar (certifique de ter instalado os pacotes necessários):
+
+```console
+npm run test
+```
+<p align="center">
+    <img  src=".github/images/cobertura_testes.png">
+</p>
+
+## Telas
+
+### Home
+
+<p align="center">
+    <img  src=".github/images/home.png">
+</p>
+
+### Criar Produto
+
+<p align="center">
+    <img  src=".github/images/new_product.png">
+</p>
+
+### Criar tipo de produto e impostos
+
+<p align="center">
+    <img  src=".github/images/new_type_product.png">
+</p>
+
+### Criar Venda
+
+<p align="center">
+    <img  src=".github/images/new_sale.png">
+</p>
+
