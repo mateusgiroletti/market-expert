@@ -2,32 +2,33 @@
 
 ## Como Executar Com Docker
 
-Utilizei o docker para subir os serviços necessarios, assim não é preciso realizer o restore do banco de dados. Caso tenha o docker instalado basta:
+Utilizei o docker para subir os serviços necessários, assim não é preciso realizar o restore do banco de dados. Caso tenha o docker instalado basta:
 
-Clonar este projeto em algum diretorio e mudar para basta backend
+Clonar este projeto em algum diretório e mudar para pasta backend
 
 ```console
 cd backend
 ```
-o arquivo .env ja esta com as credenciais necessarias para o banco de dados caso seja necessario ajusteos
+O arquivo .env já esta com as credenciais necessárias para conectar ao banco de dados, caso seja necessário ajuste-os
 
 Execute o docker container
 
 ```console
 docker-compose up -d
 ```
-A aplicação estara disponivel em
+
+A aplicação estará disponível em
 
 ```console
 http://localhost:8080/
 ```
 ## Como Executar Sem Docker
 
-Necessario ter PHP instalado e o postgres.
+Necessário ter PHP instalado e o postgres.
 
-Ajustar o .env para as credenciais necessarias conforme seu banco de dados.
+Ajustar o .env para as credenciais necessárias conforme seu banco de dados.
 
-Fazer o dump da basededados, o arquivo esta na raiz do projeto backend (dump.sql)
+Fazer o dump da base de dados, o arquivo está na raiz do projeto backend (dump.sql)
 
 Usar o servidor nativo do PHP
 
@@ -35,7 +36,7 @@ Usar o servidor nativo do PHP
 php -S localhost:8080
 ```
 
-A aplicação estara disponivel em
+A aplicação estará disponível em
 
 ```console
 http://localhost:8080/
@@ -46,36 +47,42 @@ http://localhost:8080/
 Para o banco de dados dividi as tabelas da seguinte forma:
 
 <p align="center">
-    <img  src="./.github/images/data_model.jpg">
+    <img  src=".github/images/data_model.png">
 </p>
 
-Para a codificação criei uma API HTTP simples, segui principios da arquitetura limpa, focando assim em uma melhor separação das responsabilidades entres as diferentes camadas da aplicação.
+Para a codificação, criei uma API HTTP simples, segui princípios da arquitetura limpa, focando assim em uma melhor separação das responsabilidades entres as diferentes camadas da aplicação.
 
 <ul>
-    <li>Entity: representam os objetos de domínio do sistema, abstrações dos conceitos centrais da aplicação</li>
-    <li>Use Cases: responsáveis por conter a lógica de negócio da aplicação. Eles recebem dados dos controllers, coordenam as operações necessárias e interagem com os repositórios para acessar os dados</li>
-    <li>Controllers: validam os dados das requisições HTTP e chamam os casos de uso apropriados</li>
-    <li>Infraestrutura: responsável por fornecer acesso aos recursos externos, como banco de dados </li>
-    <li>Repositórios: responsáveis por abstrair o acesso aos dados da aplicação. Eles implementam interfaces definidas na camada de domínio e fornecem métodos para recuperar, armazenar e manipular objetos de domínio. </li>
-    <li>Factories: responsáveis por criar instâncias de objetos complexos</li>
-    <li>Injeção de dependencias: são injetadas por meio do construtor, permitindo assim que diferentes implementações possam ser facilmente substituídas.</li>
+    <li><b>Entity</b>: representam os objetos de domínio do sistema, abstrações dos conceitos centrais da aplicação</li>
+    <li><b>Use Cases</b>: responsáveis por conter a lógica de negócio da aplicação. Eles recebem dados dos controllers, coordenam as operações necessárias e interagem com os repositórios para acessar os dados</li>
+    <li><b>Controllers</b>: validam os dados das requisições HTTP e chamam os casos de uso apropriados</li>
+    <li><b>Infraestrutura</b>: responsável por fornecer acesso aos recursos externos, como banco de dados </li>
+    <li><b>Repositórios</b>: responsáveis por abstrair o acesso aos dados da aplicação. Eles implementam interfaces definidas na camada de domínio e fornecem métodos para recuperar, armazenar e manipular objetos de domínio. </li>
+    <li><b>Factories</b>: responsável por criar instâncias de objetos complexos</li>
+    <li><b>Injeção de dependências</b>: são injetadas por meio do construtor, permitindo assim que diferentes implementações possam ser facilmente substituídas.</li>
 </ul>
 
-Testes automatizados
+### Testes automatizados
 
-Criei testes automizados, focando nos unitarios, estão na raiz dentro de /tests.
+Criei testes atomizados, focando nos unitários, estão na raiz dentro de /tests.
 
-Para executar eles basta conectar ao container:
+Para executar, basta conectar ao container:
 
+```console
 docker compose exec market-expert-app bash
+```
 
-executar 
+Executar 
 
+```console
 ./vendor/bin/phpunit
+```
+
+PRINT_COBERTURA_CODIGO
 
 ## Rotas da API
 
-### Criação de productos [POST /products]
+### Criação de produtos [POST /products]
 
 + Request (application/json)
    + Body
@@ -90,7 +97,7 @@ executar
 
             []
 
-### Busca de productos [GET /products]
+### Busca de produtos [GET /products]
 
 + Request (application/json)
 
@@ -128,7 +135,7 @@ Substituir {ID} pelo productId
 
 ### Criação de tipo de produto [POST /product-types]
 
-Aqui o backend ja cria os impostos para o determinado tipo de produto.
+Aqui o backend já cria os impostos para o determinado tipo de produto.
 
 + Request (application/json)
    + Body
@@ -175,6 +182,43 @@ Substituir {ID} pelo productId
                     "product_id": 1
                 },..
                 ]
+
+### Criação de imposto do tipo de produto [POST /product-type-taxes]
+
++ Request (application/json)
+   + Body
+
+            {
+                "product_type_id": 14,
+                "percentual": 30
+            }
+
++ Response 201 (application/json)
+    + Body
+
+            []
+
+### Busca dos impostos de um produto por {ID} [GET /product-type-taxes?product_type_id={ID}]
+
+Substituir {ID} pelo productId
+
++ Request (application/json)
+
++ Response 200 (application/json)
+    + Body
+
+            [
+                {
+                    "id": 3,
+                    "product_type_id": 3,
+                    "percentual": 10
+                },
+                {
+                    "id": 4,
+                    "product_type_id": 3,
+                    "percentual": 20
+                },...
+            ]
 
 ### Criação da venda [POST /sales]
 
