@@ -86,4 +86,24 @@ class ProductTypeControllerTest extends TestCase
         $this->assertEquals(http_response_code(), 400);
         $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product type']), $result);
     }
+
+    public function testStoreWithErrorCreatingProductType()
+    {
+        // Arrange
+        $createProductTypeUseCaseMock = $this->createMock(CreateProductTypeUseCase::class);
+        $createProductTypeUseCaseMock->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        // ACT
+        $productTypeController = new ProductTypeController(
+            $this->createMock(ListProductTypeUseCase::class),
+            $createProductTypeUseCaseMock
+        );
+        $result = $productTypeController->store(['product_id' => 1, 'name' => 'Type']);
+
+        // Assert
+        $this->assertEquals(http_response_code(), 400);
+        $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product type']), $result);
+    }
 }

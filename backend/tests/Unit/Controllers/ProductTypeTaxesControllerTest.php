@@ -108,4 +108,24 @@ class ProductTypeTaxesControllerTest extends TestCase
         $this->assertEquals(http_response_code(), 400);
         $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product type']), $result);
     }
+
+    public function testStoreWithErrorCreatingProductTypeTaxes()
+    {
+        // Arrange
+        $createProductTypeTaxesUseCaseMock = $this->createMock(CreateProductTypeTaxesUseCase::class);
+        $createProductTypeTaxesUseCaseMock->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        // ACT
+        $productTypeTaxesController = new ProductTypeTaxesController(
+            $this->createMock(ListProductTypeTaxesUseCase::class),
+            $createProductTypeTaxesUseCaseMock
+        );
+        $result = $productTypeTaxesController->store(['product_type_id' => 1, 'percentual' => 30]);
+
+        // Assert
+        $this->assertEquals(http_response_code(), 400);
+        $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product type taxes']), $result);
+    }
 }

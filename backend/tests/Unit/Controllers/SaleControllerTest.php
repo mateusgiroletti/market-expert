@@ -55,4 +55,34 @@ class SaleControllerTest extends TestCase
         $this->assertEquals(http_response_code(), 400);
         $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product']), $result);
     }
+
+    public function testStoreWithErrorCreatingSale()
+    {
+        // Arrange
+        $createSaleUseCaseMock = $this->createMock(CreateSaleUseCase::class);
+        $createSaleUseCaseMock->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        // ACT
+        $saleController = new SaleController(
+            $createSaleUseCaseMock
+        );
+        $result = $saleController->store([
+            "products" => [
+                [
+                    "product_id" => 1,
+                    "amount" => 4
+                ],
+                [
+                    "product_id" => 2,
+                    "amount" => 3
+                ]
+            ]
+        ]);
+
+        // Assert
+        $this->assertEquals(http_response_code(), 400);
+        $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product']), $result);
+    }
 }

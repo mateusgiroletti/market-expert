@@ -111,4 +111,65 @@ class ProductControllerTest extends TestCase
         $this->assertEquals(http_response_code(), 400);
         $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product']), $result);
     }
+
+    public function testStoreWithErrorCreatingProduct()
+    {
+        // Arrange
+        $createProductUseCaseMock = $this->createMock(CreateProductUseCase::class);
+        $createProductUseCaseMock->expects($this->once())
+            ->method('execute')
+            ->willReturn(false);
+
+        // ACT
+        $productController = new ProductController(
+            $this->createMock(ListProductUseCase::class),
+            $this->createMock(FindProductUseCase::class),
+            $createProductUseCaseMock
+        );
+        $result = $productController->store(['name' => 'Product', 'price' => 10]);
+
+        // Assert
+        $this->assertEquals(http_response_code(), 400);
+        $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product']), $result);
+    }
+
+    public function testStoreWithInvalidNameMaxLength()
+    {
+        // Arrange
+        $productController = new ProductController(
+            $this->createMock(ListProductUseCase::class),
+            $this->createMock(FindProductUseCase::class),
+            $this->createMock(CreateProductUseCase::class)
+        );
+
+        // ACT
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessage('name must be at most 100 characters long');
+
+        $result = $productController->store(['name' => random_bytes(101), 'price' => 20]);
+
+        // Assert
+        $this->assertEquals(http_response_code(), 400);
+        $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product']), $result);
+    }
+
+    public function testStoreWithInvalidNameMinLength()
+    {
+        // Arrange
+        $productController = new ProductController(
+            $this->createMock(ListProductUseCase::class),
+            $this->createMock(FindProductUseCase::class),
+            $this->createMock(CreateProductUseCase::class)
+        );
+
+        // ACT
+        $this->expectException(\ErrorException::class);
+        $this->expectExceptionMessage('name must be at least 2 characters');
+
+        $result = $productController->store(['name' => random_bytes(1), 'price' => 20]);
+
+        // Assert
+        $this->assertEquals(http_response_code(), 400);
+        $this->assertEquals(json_encode(['error' => true, 'msg' => 'Error when create product']), $result);
+    }
 }
